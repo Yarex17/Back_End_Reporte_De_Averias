@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reporte_De_Averias", "Reporte_De_Averias\Reporte_De_Averias.csproj", "{1AC28FBE-FEBE-473C-9CDD-64EB56BC474D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reporte_De_Averias", "Reporte_De_Averias\Reporte_De_Averias.csproj", "{1AC28FBE-FEBE-473C-9CDD-64EB56BC474D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{6F7DAC44-EA59-40DD-939E-A224A4E738AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{6F7DAC44-EA59-40DD-939E-A224A4E738AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{579BE090-25EC-4F19-99F2-0B1A78970EB5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{6F7DAC44-EA59-40DD-939E-A224A4E738AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F7DAC44-EA59-40DD-939E-A224A4E738AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F7DAC44-EA59-40DD-939E-A224A4E738AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{579BE090-25EC-4F19-99F2-0B1A78970EB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{579BE090-25EC-4F19-99F2-0B1A78970EB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{579BE090-25EC-4F19-99F2-0B1A78970EB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{579BE090-25EC-4F19-99F2-0B1A78970EB5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
