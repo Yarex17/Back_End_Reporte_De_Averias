@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Data.Data
+namespace Data.Context
 {
     public partial class TraReporteUsuario
     {

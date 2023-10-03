@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Entities;
+using System.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data
 {
@@ -16,7 +18,9 @@ namespace Data
 
         public async Task<String> registarUsuario(Usuario usuario)
         {
-            return null;
+            using{var dbContext = new DbContext()
+                    
+                    }
         }
 
         public async Task<List<Usuario>> buscarUsuario(string nombre)

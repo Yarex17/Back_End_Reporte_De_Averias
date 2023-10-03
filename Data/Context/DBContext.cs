@@ -2,15 +2,15 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Data.Data
+namespace Data.Context
 {
-    public partial class ReporteAverias_2023Context : DbContext
+    public partial class DbContext : Microsoft.EntityFrameworkCore.DbContext
     {
-        public ReporteAverias_2023Context()
+        public DbContext()
         {
         }
 
-        public ReporteAverias_2023Context(DbContextOptions<ReporteAverias_2023Context> options)
+        public DbContext(DbContextOptions<DbContext> options)
             : base(options)
         {
         }
