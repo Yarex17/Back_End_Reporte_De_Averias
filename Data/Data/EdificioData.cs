@@ -1,6 +1,6 @@
 ﻿using Entities;
 using System;
-namespace Data
+namespace Data.Data
 {
     public class EdificioData
     {

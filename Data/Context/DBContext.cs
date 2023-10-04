@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Data.Context
 {
-    public partial class DbContext : Microsoft.EntityFrameworkCore.DbContext
+    public partial class DBContext : DbContext
     {
-        public DbContext()
+        public DBContext()
         {
         }
 
-        public DbContext(DbContextOptions<DbContext> options)
+        public DBContext(DbContextOptions<DbContext> options)
             : base(options)
         {
         }
