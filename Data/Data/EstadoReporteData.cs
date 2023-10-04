@@ -1,4 +1,7 @@
-﻿using Entities;
+﻿using Data.Context;
+using Entities;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,31 +12,47 @@ namespace Data.Data
 {
     public class EstadoReporteData
     {
-        public async Task<List<EstadoReporte>> listarEstadoReporte()
+        DBContext dbContext = new DBContext();
+        public async Task<List<TraEstado>> listarEstado()
         {
-            return null;
+            var estado = dbContext.TraEstado.FromSqlRaw(@"exec AVRS.PA_BuscarEstado").ToList();
+            return estado;
         }
 
-        public async Task<String> registarEstadoReporte(EstadoReporte estadoReporte)
+        public void registarEstado(TraEstado estado)
         {
-            return null;
+            var parameters = new[]
+            {
+                new SqlParameter("@TC_Nombre", estado.TcNombre),
+            };
+            dbContext.TraEstado.FromSqlRaw(@"exec AVRS.PA_CrearEstado @TC_Nombre", parameters).ToList().FirstOrDefault();
         }
 
-        public async Task<List<EstadoReporte>> buscarEstadoReporte(string nombre)
+        public TraEstado buscarEstado(string nombre)
         {
-            return null;
+            var parameter = new List<SqlParameter>();
+            parameter.Add(new SqlParameter("@TC_Nombre", nombre));
+            TraEstado Estado = dbContext.TraEstado.FromSqlRaw(@"exec AVRS.PA_BuscarEstado @TC_Nombre", parameter.ToArray()).ToList().FirstOrDefault();
+            return Estado;
         }
 
-        public async Task<String> modificarEstadoReporte(EstadoReporte estadoReporte)
+        public async Task<TraEstado> modificarEstado(TraEstado estado)
         {
-
-            return null;
+            var parameter = new List<SqlParameter>();
+            parameter.Add(new SqlParameter("@TN_IdEstado", estado.TnIdEstado));
+            parameter.Add(new SqlParameter("@TC_Propietario", estado.TcNombre));
+            parameter.Add(new SqlParameter("@TB_Activo", estado.TbActivo));
+            TraEstado estado1 = dbContext.TraEstado.FromSqlRaw(@"exec AVRS.PA_ActualizarEstado @TC_Nombre, @TC_Activo", parameter.ToArray()).ToList().FirstOrDefault();
+            return estado1;
 
         }
 
-        public async Task<String> eliminarEstadoReporte(EstadoReporte estadoReporte)
+        public async Task<TraEstado> eliminarEstado(TraEstado Estado)
         {
-            return null;
+            var parameter = new List<SqlParameter>();
+            parameter.Add(new SqlParameter("@TN_IdEstado", Estado.TnIdEstado));
+            TraEstado estado1 = dbContext.TraEstado.FromSqlRaw(@"exec AVRS.PA_EliminarEstado @TN_IdEstado", parameter.ToArray()).ToList().FirstOrDefault();
+            return estado1;
         }
     }
 }
