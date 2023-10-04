@@ -1,4 +1,5 @@
 ﻿using System;
+using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -22,7 +23,7 @@ namespace Data.Context
         public virtual DbSet<TraReporte> TraReporte { get; set; }
         public virtual DbSet<TraReporteUsuario> TraReporteUsuario { get; set; }
         public virtual DbSet<TraTipoAveria> TraTipoAveria { get; set; }
-        public virtual DbSet<TraUsuario> TraUsuario { get; set; }
+        public virtual DbSet<Usuario> TraUsuario { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
