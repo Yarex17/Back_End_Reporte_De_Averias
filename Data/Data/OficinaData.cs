@@ -1,4 +1,7 @@
-﻿using Entities;
+﻿using Data.Context;
+using Entities;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,31 +12,39 @@ namespace Data.Data
 {
     internal class OficinaData
     {
-        public async Task<List<Oficina>> listarOficina()
+        DBContext dbContext = new DBContext();
+
+        public async Task<List<TraOficina>> listarOficina()
         {
-            return null;
+            var oficina = dbContext.TraOficina.FromSqlRaw(@"exec EDFS.PA_BuscarOficina").ToList();
+            return oficina;
         }
 
-        public async Task<String> registarOficina(Oficina oficina)
+        public void registarOficina(TraOficina oficina)
         {
-            return null;
+            var parameters = new[]
+           {
+                new SqlParameter("@TC_Numero_De_Piso", oficina.TnNumeroPiso),
+                new SqlParameter("@TC_Oficina", oficina.TnEdificio),
+            };
+            dbContext.TraOficina.FromSqlRaw(@"exec EDFS.PA_CrearOficina @TC_Numero_De_Piso,@TC_Oficina", parameters).ToList().FirstOrDefault();
         }
 
-        public async Task<List<EstadoReporte>> buscarOficina(string nombre)
+        public TraOficina buscarOficina(int id)
         {
-            return null;
+            var parameter = new List<SqlParameter>();
+            parameter.Add(new SqlParameter("@id", id));
+            TraOficina oficina = dbContext.TraOficina.FromSqlRaw(@"exec EDFS.PA_BuscarOficina @id", parameter.ToArray()).ToList().FirstOrDefault();
+            return oficina;
         }
 
-        public async Task<String> modificarOficina(Oficina oficina)
+
+        public async Task<TraOficina> eliminarOficina(TraOficina oficina)
         {
-
-            return null;
-
-        }
-
-        public async Task<String> eliminarOficina(Oficina oficina)
-        {
-            return null;
+            var parameter = new List<SqlParameter>();
+            parameter.Add(new SqlParameter("@TN_IdOficina", oficina.TnIdOficina));
+            TraOficina Oficina1 = dbContext.TraOficina.FromSqlRaw(@"exec AVRS.PA_EliminarOficina @TN_IdOficina", parameter.ToArray()).ToList().FirstOrDefault();
+            return Oficina1;
         }
     }
 }

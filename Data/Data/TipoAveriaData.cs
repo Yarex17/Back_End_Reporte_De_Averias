@@ -1,4 +1,7 @@
-﻿using Entities;
+﻿using Data.Context;
+using Entities;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,31 +12,47 @@ namespace Data.Data
 {
     public class TipoAveriaData
     {
-        public async Task<List<TipoDeAveria>> listarTipoDeAveria()
+        DBContext dbContext = new DBContext();
+        public async Task<List<TraTipoAveria>> listarTipoAveria()
         {
-            return null;
+            var tipoAveria = dbContext.TraTipoAveria.FromSqlRaw(@"exec AVRS.PA_BuscarTipoAveria").ToList();
+            return tipoAveria;
         }
 
-        public async Task<String> registarTipoDeAveria(TipoDeAveria tipoDeAveria)
+        public void registarTipoAveria(TraTipoAveria tipoAveria)
         {
-            return null;
+            var parameters = new[]
+            {
+                new SqlParameter("@TC_Descripcion", tipoAveria.TcDescripcion),
+            };
+            dbContext.TraTipoAveria.FromSqlRaw(@"exec AVRS.PA_CrearTipoAveria @TC_Nombre", parameters).ToList().FirstOrDefault();
         }
 
-        public async Task<List<Reporte>> buscarTipoDeAveria(string nombre)
+        public TraTipoAveria buscarTipoAveria(string nombre)
         {
-            return null;
+            var parameter = new List<SqlParameter>();
+            parameter.Add(new SqlParameter("@TC_Nombre", nombre));
+            TraTipoAveria tipoAveria = dbContext.TraTipoAveria.FromSqlRaw(@"exec AVRS.PA_BuscarTipoAveria @TC_Nombre", parameter.ToArray()).ToList().FirstOrDefault();
+            return tipoAveria;
         }
 
-        public async Task<String> modificarTipoDeAveria(TipoDeAveria tipoDeAveria)
+        public async Task<TraTipoAveria> modificarTipoAveria(TraTipoAveria tipoAveria)
         {
-
-            return null;
+            var parameter = new List<SqlParameter>();
+            parameter.Add(new SqlParameter("@TN_IdTipoAveria", tipoAveria.TnIdTipoAveria));
+            parameter.Add(new SqlParameter("@TC_Descripcion", tipoAveria.TcDescripcion));
+            parameter.Add(new SqlParameter("@TB_Activo", tipoAveria.TbActivo));
+            TraTipoAveria tipoAveria1 = dbContext.TraTipoAveria.FromSqlRaw(@"exec AVRS.PA_ActualizarTipoAveria @TN_IdTipoAveria, @TC_Descripcion, @TB_Activo", parameter.ToArray()).ToList().FirstOrDefault();
+            return tipoAveria1;
 
         }
 
-        public async Task<String> eliminarTipoDeAveria(TipoDeAveria tipoDeAveria)
+        public async Task<TraTipoAveria> eliminarTipoAveria(TraTipoAveria TipoAveria)
         {
-            return null;
+            var parameter = new List<SqlParameter>();
+            parameter.Add(new SqlParameter("@TN_IdTipoAveria", TipoAveria.TnIdTipoAveria));
+            TraTipoAveria TipoAveria1 = dbContext.TraTipoAveria.FromSqlRaw(@"exec AVRS.PA_EliminarTipoAveria @TN_IdTipoAveria", parameter.ToArray()).ToList().FirstOrDefault();
+            return TipoAveria1;
         }
     }
 }
