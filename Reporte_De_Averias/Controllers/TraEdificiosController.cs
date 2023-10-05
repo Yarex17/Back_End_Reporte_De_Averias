@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Entities.Context;
+using Data.Data;
+using Negocio;
 
 namespace Reporte_De_Averias.Controllers
 {
@@ -13,32 +15,25 @@ namespace Reporte_De_Averias.Controllers
     [ApiController]
     public class TraEdificiosController : ControllerBase
     {
-        private readonly DBContext _context;
-
-        public TraEdificiosController(DBContext context)
-        {
-            _context = context;
-        }
+        private readonly DBContext _context = new DBContext();
+        private readonly NegocioSQL _negocioSql = new NegocioSQL();
 
         // GET: api/TraEdificios
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TraEdificio>>> GetTraEdificio()
+        [Route(nameof(ListarTraEdificio))]
+        public Task<List<TraEdificio>> ListarTraEdificio()
         {
-          if (_context.TraEdificio == null)
-          {
-              return NotFound();
-          }
-            return await _context.TraEdificio.ToListAsync();
+            return _negocioSql.listarEdificio();
         }
 
         // GET: api/TraEdificios/5
         [HttpGet("{id}")]
         public async Task<ActionResult<TraEdificio>> GetTraEdificio(int id)
         {
-          if (_context.TraEdificio == null)
-          {
-              return NotFound();
-          }
+            if (_context.TraEdificio == null)
+            {
+                return NotFound();
+            }
             var traEdificio = await _context.TraEdificio.FindAsync(id);
 
             if (traEdificio == null)
@@ -83,35 +78,20 @@ namespace Reporte_De_Averias.Controllers
         // POST: api/TraEdificios
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TraEdificio>> PostTraEdificio(TraEdificio traEdificio)
+        [Route(nameof(ModificarTraEdificio))]
+        public bool ModificarTraEdificio(TraEdificio traEdificio)
         {
-          if (_context.TraEdificio == null)
-          {
-              return Problem("Entity set 'DBContext.TraEdificio'  is null.");
-          }
-            _context.TraEdificio.Add(traEdificio);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTraEdificio", new { id = traEdificio.TnIdEdificio }, traEdificio);
+            _negocioSql.eliminarEdificio(traEdificio.TnIdEdificio);
+            return true;
         }
 
         // DELETE: api/TraEdificios/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTraEdificio(int id)
+        [HttpPost]
+        [Route(nameof(EliminarTraEdificio))]
+        public async Task<IActionResult> EliminarTraEdificio(int id)
         {
-            if (_context.TraEdificio == null)
-            {
-                return NotFound();
-            }
-            var traEdificio = await _context.TraEdificio.FindAsync(id);
-            if (traEdificio == null)
-            {
-                return NotFound();
-            }
-
-            _context.TraEdificio.Remove(traEdificio);
-            await _context.SaveChangesAsync();
-
+            _negocioSql.eliminarEdificio(id);
             return NoContent();
         }
 

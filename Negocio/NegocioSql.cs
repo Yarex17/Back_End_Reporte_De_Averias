@@ -7,10 +7,10 @@ namespace Negocio
 {
     public class NegocioSQL
     {
-        public AccesoDatosSql _accesoDatosSQL = new AccesoDatosSql();
-        public NegocioSQL(AccesoDatosSql accesoDatosSQL)
+        public AccesoDatosSql _accesoDatosSQL; 
+        public NegocioSQL()
         {
-            _accesoDatosSQL = accesoDatosSQL;
+            _accesoDatosSQL = new AccesoDatosSql();
         }
 
         #region CRUDUSUARIO
@@ -55,9 +55,9 @@ namespace Negocio
         {
             _accesoDatosSQL.modificarEdificio(edificio);
         }
-        public void eliminarEdificio(TraEdificio edificio)
+        public void eliminarEdificio(int id)
         {
-            _accesoDatosSQL.eliminarEdificio(edificio);
+            _accesoDatosSQL.eliminarEdificio(id);
         }
         #endregion
 

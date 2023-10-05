@@ -29,7 +29,7 @@ namespace Entities.Context
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=163.178.107.10;Database=ReporteAverias_2023;User Id=laboratorios;Password=TUy&)&nfC7QqQau.%278UQ24/=%;TrustServerCertificate=true;");
+                optionsBuilder.UseSqlServer("Data Source=DESKTOP-HAJJ5O1;Initial Catalog=ReporteAverias;TrustServerCertificate=true;User Id=sa;Password=12345;");
             }
         }
 

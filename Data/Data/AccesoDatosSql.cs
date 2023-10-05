@@ -79,8 +79,7 @@ namespace Data.Data
         #region CRUDEDIFICIO
         public async Task<List<TraEdificio>> listarEdificio()
         {
-
-            var edificio = dbContext.TraEdificio.FromSqlRaw(@"exec EDFS.PA_BuscarEdificio").ToList();
+            var edificio = dbContext.TraEdificio.FromSqlRaw(@"exec EDFS.PA_ListarEdificios").ToList();
             return edificio;
         }
 
@@ -114,11 +113,11 @@ namespace Data.Data
 
         }
 
-        public async Task<TraEdificio> eliminarEdificio(TraEdificio edificio)
+        public async Task<TraEdificio> eliminarEdificio(int id)
         {
             var parameter = new List<SqlParameter>();
-            parameter.Add(new SqlParameter("@TN_IdEdificio", edificio.TnIdEdificio));
-            TraEdificio edificio1 = dbContext.TraEdificio.FromSqlRaw(@"exec AVRS.PA_EliminarEstado @TN_IdEdificio", parameter.ToArray()).ToList().FirstOrDefault();
+            parameter.Add(new SqlParameter("@TN_IdEdificio", id));
+            TraEdificio edificio1 = dbContext.TraEdificio.FromSqlRaw(@"exec EDFS.SP_EliminarEdificio @TN_IdEdificio", parameter.ToArray()).ToList().FirstOrDefault();
             return edificio1;
         }
         #endregion
