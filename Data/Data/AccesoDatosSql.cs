@@ -11,7 +11,7 @@ using Entities.Context;
 
 namespace Data.Data
 {
-    internal class AccesoDatosSql
+    public class AccesoDatosSql
     {
         DBContext dbContext = new DBContext();
 
