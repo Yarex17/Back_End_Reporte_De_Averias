@@ -1,5 +1,4 @@
-﻿using Data.Context;
-using Entities;
+﻿using Entities;
 using Entities.Context;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
