@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml.Linq;
 
-namespace Data.Context
+namespace Entities.Context
 {
     public partial class TraUsuario
     {

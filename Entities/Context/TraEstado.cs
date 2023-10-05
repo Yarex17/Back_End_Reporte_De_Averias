@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Data.Context
+namespace Entities.Context
 {
-    public partial class TraTipoAveria
+    public partial class TraEstado
     {
-        public TraTipoAveria()
+        public TraEstado()
         {
             TraReporte = new HashSet<TraReporte>();
         }
 
-        public int TnIdTipoAveria { get; set; }
-        public string TcDescripcion { get; set; }
+        public int TnIdEstado { get; set; }
+        public string TcNombre { get; set; }
         public bool? TbActivo { get; set; }
         public bool TbEliminado { get; set; }
 

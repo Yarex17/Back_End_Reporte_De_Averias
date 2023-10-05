@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Entities;
 using System.Data;
 using Microsoft.EntityFrameworkCore;
-using Data.Context;
 using Microsoft.Data.SqlClient;
+using Entities.Context;
 
 namespace Data.Data
 {
