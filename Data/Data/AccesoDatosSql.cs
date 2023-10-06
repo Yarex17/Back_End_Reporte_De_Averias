@@ -28,7 +28,6 @@ namespace Data.Data
         {
             var parameters = new[]
             {
-                new SqlParameter("@TN_Oficina", usuario.TnOficina),
                 new SqlParameter("@TC_Rol", usuario.TcRol),
                 new SqlParameter("@TC_Nombre", usuario.TcNombre),
                 new SqlParameter("@TC_Apellido", usuario.TcApellido),
@@ -36,7 +35,7 @@ namespace Data.Data
                 new SqlParameter("@TC_Correo", usuario.TcCorreo),
                 new SqlParameter("@TC_Contrasennia", usuario.TcContrasennia),
             };
-            dbContext.TraUsuario.FromSqlRaw(@"exec AVRS.PA_CrearUsuario @TN_Oficina, @TC_Rol, @TC_Nombre, @TC_Apellido, @TC_Cedula, @TC_Correo, @TC_Contrasennia", parameters).ToList().FirstOrDefault();
+            dbContext.TraUsuario.FromSqlRaw(@"exec AVRS.PA_CrearUsuario @TC_Rol, @TC_Nombre, @TC_Apellido, @TC_Cedula, @TC_Correo, @TC_Contrasennia", parameters).ToList().FirstOrDefault();
         }
 
         public TraUsuario buscarUsuario(string nombre)
@@ -51,7 +50,6 @@ namespace Data.Data
         {
             var parameter = new List<SqlParameter>();
             parameter.Add(new SqlParameter("@TN_IdUsuario", usuario.TnIdUsuario));
-            parameter.Add(new SqlParameter("@TC_Oficina", usuario.TnOficina));
             parameter.Add(new SqlParameter("@TC_Rol", usuario.TcRol));
             parameter.Add(new SqlParameter("@TC_Nombre", usuario.TcNombre));
             parameter.Add(new SqlParameter("@TC_Apellido", usuario.TcApellido));
@@ -59,7 +57,7 @@ namespace Data.Data
             parameter.Add(new SqlParameter("@TC_Correo", usuario.TcCorreo));
             parameter.Add(new SqlParameter("@TC_Contrasennia", usuario.TcCorreo));
             parameter.Add(new SqlParameter("@TB_Activo", usuario.TcContrasennia));
-            TraUsuario usuario1 = dbContext.TraUsuario.FromSqlRaw(@"exec AVRS.PA_ActualizarUsuario @TN_Oficina, @TC_Rol, @TC_Nombre, @TC_Apellido, @TC_Cedula, @TC_Correo, @TC_Contrasennia, @TC_Activo", parameter.ToArray()).ToList().FirstOrDefault();
+            TraUsuario usuario1 = dbContext.TraUsuario.FromSqlRaw(@"exec AVRS.PA_ActualizarUsuario @TC_Rol, @TC_Nombre, @TC_Apellido, @TC_Cedula, @TC_Correo, @TC_Contrasennia, @TC_Activo", parameter.ToArray()).ToList().FirstOrDefault();
             return usuario1;
 
         }
@@ -178,8 +176,7 @@ namespace Data.Data
         {
             var parameters = new[]
            {
-                new SqlParameter("@TC_Numero_De_Piso", oficina.TnNumeroPiso),
-                new SqlParameter("@TC_Oficina", oficina.TnEdificio),
+                new SqlParameter("@TC_Numero_De_Piso", oficina.TnNumeroPiso)
             };
             dbContext.TraOficina.FromSqlRaw(@"exec EDFS.PA_CrearOficina @TC_Numero_De_Piso,@TC_Oficina", parameters).ToList().FirstOrDefault();
         }
@@ -291,14 +288,11 @@ namespace Data.Data
             var parameters = new[]
            {
                 new SqlParameter("@TN_Id_Reporte", Reporte.TnIdReporte),
-                new SqlParameter("@TN_Tipo_De_Averia", Reporte.TnTipoAveria),
-                new SqlParameter("@TN_Estado", Reporte.TnEstado),
-                new SqlParameter("@TN_Oficina", Reporte.TnOficina),
                 new SqlParameter("@TC_Descripcion", Reporte.TcDescripcion),
                 new SqlParameter("@TB_Activado", Reporte.TbActivo),
                 new SqlParameter("@TB_Eliminado", Reporte.TbEliminado),
             };
-            dbContext.TraReporte.FromSqlRaw(@"exec EDFS.PA_CrearReporte @TN_Id_Reporte,@TN_Tipo_De_Averia,@TN_Estado,@TN_Oficina,@TB_Activado,@TB_Eliminado", parameters).ToList().FirstOrDefault();
+            dbContext.TraReporte.FromSqlRaw(@"exec EDFS.PA_CrearReporte @TN_Id_Reporte,@TB_Activado,@TB_Eliminado", parameters).ToList().FirstOrDefault();
         }
 
         public TraReporte buscarReporte(int id)
@@ -313,12 +307,8 @@ namespace Data.Data
         {
             var parameter = new List<SqlParameter>();
             parameter.Add(new SqlParameter("@TN_IdReporte", Reporte.TnIdReporte));
-            parameter.Add(new SqlParameter("@TN_Estado", Reporte.TnEstado));
-            parameter.Add(new SqlParameter("@TN_Tipo_De_Avería", Reporte.TnTipoAveria));
-            parameter.Add(new SqlParameter("@TN_Tipo_De_Avería", Reporte.TnPrioridad));
-            parameter.Add(new SqlParameter("@TN_Tipo_De_Avería", Reporte.TnOficina));
             parameter.Add(new SqlParameter("@TB_Activo", Reporte.TbActivo));
-            TraReporte Reporte1 = dbContext.TraReporte.FromSqlRaw(@"exec EDFS.PA_ActualizarReporte @TN_Estado, @TN_Tipo_De_Avería,TnOficina,@TC_Activo", parameter.ToArray()).ToList().FirstOrDefault();
+            TraReporte Reporte1 = dbContext.TraReporte.FromSqlRaw(@"exec EDFS.PA_ActualizarReporte @TC_Activo", parameter.ToArray()).ToList().FirstOrDefault();
             return Reporte1;
 
         }

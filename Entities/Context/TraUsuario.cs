@@ -1,28 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Xml.Linq;
 
-namespace Entities.Context
+namespace Entities.Context;
+
+public partial class TraUsuario
 {
-    public partial class TraUsuario
-    {
-        public TraUsuario()
-        {
-            TraReporteUsuario = new HashSet<TraReporteUsuario>();
-        }
+    public int TnIdUsuario { get; set; }
 
-        public int TnIdUsuario { get; set; }
-        public int TnOficina { get; set; }
-        public string TcRol { get; set; }
-        public string TcNombre { get; set; }
-        public string TcApellido { get; set; }
-        public string TcCedula { get; set; }
-        public string TcCorreo { get; set; }
-        public string TcContrasennia { get; set; }
-        public bool? TbActivo { get; set; }
-        public bool TbEliminado { get; set; }
+    public string TcRol { get; set; } = null!;
 
-        public virtual TraOficina TnOficinaNavigation { get; set; }
-        public virtual ICollection<TraReporteUsuario> TraReporteUsuario { get; set; }
-    }
+    public string TcNombre { get; set; } = null!;
+
+    public string TcApellido { get; set; } = null!;
+
+    public string TcCedula { get; set; } = null!;
+
+    public string TcCorreo { get; set; } = null!;
+
+    public string TcContrasennia { get; set; } = null!;
+
+    public bool? TbActivo { get; set; }
+
+    public bool TbEliminado { get; set; }
+
+    public virtual ICollection<TraOficina> TnIdOficinas { get; set; } = new List<TraOficina>();
+
+    public virtual ICollection<TraReporte> TnIdReportes { get; set; } = new List<TraReporte>();
 }
