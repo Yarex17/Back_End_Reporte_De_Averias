@@ -110,7 +110,7 @@ namespace Data.Data
             return edificio1;
 
         }
-
+        //Hola
         public async Task<TraEdificio> eliminarEdificio(int id)
         {
             var parameter = new List<SqlParameter>();
