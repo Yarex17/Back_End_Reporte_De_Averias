@@ -1,24 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Entities.Context
+namespace Entities.Context;
+
+public partial class TraOficina
 {
-    public partial class TraOficina
-    {
-        public TraOficina()
-        {
-            TraReporte = new HashSet<TraReporte>();
-            TraUsuario = new HashSet<TraUsuario>();
-        }
+    public int TnIdOficina { get; set; }
 
-        public int TnIdOficina { get; set; }
-        public int TnNumeroPiso { get; set; }
-        public int TnEdificio { get; set; }
-        public bool? TbActivo { get; set; }
-        public bool TbEliminado { get; set; }
+    public int TnNumeroPiso { get; set; }
 
-        public virtual TraEdificio TnEdificioNavigation { get; set; }
-        public virtual ICollection<TraReporte> TraReporte { get; set; }
-        public virtual ICollection<TraUsuario> TraUsuario { get; set; }
-    }
+    public bool? TbActivo { get; set; }
+
+    public bool TbEliminado { get; set; }
+
+    public virtual ICollection<TraReporteTipoAveriaPrioridadEstadoOficina> TraReporteTipoAveriaPrioridadEstadoOficinas { get; set; } = new List<TraReporteTipoAveriaPrioridadEstadoOficina>();
+
+    public virtual ICollection<TraUsuario> TnIdUsuarios { get; set; } = new List<TraUsuario>();
 }

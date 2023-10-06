@@ -16,294 +16,273 @@ namespace Entities.Context
         }
 
         public virtual DbSet<TraEdificio> TraEdificio { get; set; }
+
         public virtual DbSet<TraEstado> TraEstado { get; set; }
+
         public virtual DbSet<TraOficina> TraOficina { get; set; }
+
+        public virtual DbSet<TraOficinaEdificio> TraOficinaEdificio { get; set; }
+
         public virtual DbSet<TraPrioridad> TraPrioridad { get; set; }
+
         public virtual DbSet<TraReporte> TraReporte { get; set; }
-        public virtual DbSet<TraReporteUsuario> TraReporteUsuario { get; set; }
+
+        public virtual DbSet<TraReporteTipoAveriaPrioridadEstadoOficina> TraReporteTipoAveriaPrioridadEstadoOficina { get; set; }
+
         public virtual DbSet<TraTipoAveria> TraTipoAveria { get; set; }
+
         public virtual DbSet<TraUsuario> TraUsuario { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-HAJJ5O1;Initial Catalog=ReporteAverias;TrustServerCertificate=true;User Id=sa;Password=12345;");
-            }
-        }
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Data Source=DESKTOP-HAJJ5O1;User Id=sa;Password=12345;Initial Catalog=ReporteAverias;TrustServerCertificate=true;");
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
-
             modelBuilder.Entity<TraEdificio>(entity =>
             {
-                entity.HasKey(e => e.TnIdEdificio)
-                    .HasName("PKRA_Edificio");
+                entity.HasKey(e => e.TnIdEdificio).HasName("PKRA_Edificio");
 
                 entity.ToTable("TRA_Edificio", "EDFS");
 
                 entity.Property(e => e.TnIdEdificio).HasColumnName("TN_IdEdificio");
-
                 entity.Property(e => e.TbActivo)
                     .IsRequired()
-                    .HasColumnName("TB_Activo")
-                    .HasDefaultValueSql("((1))");
-
+                    .HasDefaultValueSql("((1))")
+                    .HasColumnName("TB_Activo");
                 entity.Property(e => e.TbEliminado).HasColumnName("TB_Eliminado");
-
                 entity.Property(e => e.TcNombre)
-                    .IsRequired()
-                    .HasColumnName("TC_Nombre")
                     .HasMaxLength(50)
-                    .IsUnicode(false);
-
+                    .IsUnicode(false)
+                    .HasColumnName("TC_Nombre");
                 entity.Property(e => e.TcPropietario)
-                    .IsRequired()
-                    .HasColumnName("TC_Propietario")
                     .HasMaxLength(50)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .HasColumnName("TC_Propietario");
             });
 
             modelBuilder.Entity<TraEstado>(entity =>
             {
-                entity.HasKey(e => e.TnIdEstado)
-                    .HasName("PKRA_Estado");
+                entity.HasKey(e => e.TnIdEstado).HasName("PKRA_Estado");
 
                 entity.ToTable("TRA_Estado", "AVRS");
 
                 entity.Property(e => e.TnIdEstado).HasColumnName("TN_IdEstado");
-
                 entity.Property(e => e.TbActivo)
                     .IsRequired()
-                    .HasColumnName("TB_Activo")
-                    .HasDefaultValueSql("((1))");
-
+                    .HasDefaultValueSql("((1))")
+                    .HasColumnName("TB_Activo");
                 entity.Property(e => e.TbEliminado).HasColumnName("TB_Eliminado");
-
                 entity.Property(e => e.TcNombre)
-                    .IsRequired()
-                    .HasColumnName("TC_Nombre")
                     .HasMaxLength(50)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .HasColumnName("TC_Nombre");
             });
 
             modelBuilder.Entity<TraOficina>(entity =>
             {
-                entity.HasKey(e => e.TnIdOficina)
-                    .HasName("PKRA_Oficina");
+                entity.HasKey(e => e.TnIdOficina).HasName("PKRA_Oficina");
 
                 entity.ToTable("TRA_Oficina", "EDFS");
 
                 entity.Property(e => e.TnIdOficina).HasColumnName("TN_IdOficina");
-
                 entity.Property(e => e.TbActivo)
                     .IsRequired()
-                    .HasColumnName("TB_Activo")
-                    .HasDefaultValueSql("((1))");
-
+                    .HasDefaultValueSql("((1))")
+                    .HasColumnName("TB_Activo");
                 entity.Property(e => e.TbEliminado).HasColumnName("TB_Eliminado");
-
-                entity.Property(e => e.TnEdificio).HasColumnName("TN_Edificio");
-
                 entity.Property(e => e.TnNumeroPiso).HasColumnName("TN_NumeroPiso");
+            });
 
-                entity.HasOne(d => d.TnEdificioNavigation)
-                    .WithMany(p => p.TraOficina)
-                    .HasForeignKey(d => d.TnEdificio)
+            modelBuilder.Entity<TraOficinaEdificio>(entity =>
+            {
+                entity.HasKey(e => new { e.TnIdEdificio, e.TnIdOficina }).HasName("PKRA_OficinaEdificio");
+
+                entity.ToTable("TRA_OficinaEdificio", "EDFS");
+
+                entity.Property(e => e.TnIdEdificio).HasColumnName("TN_IdEdificio");
+                entity.Property(e => e.TnIdOficina).HasColumnName("TN_IdOficina");
+
+                entity.HasOne(d => d.TnIdEdificioNavigation).WithMany(p => p.TraOficinaEdificios)
+                    .HasForeignKey(d => d.TnIdEdificio)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FKRA_Oficina_Edificio");
+                    .HasConstraintName("FKRA_OficinaEdificio_Edificio");
             });
 
             modelBuilder.Entity<TraPrioridad>(entity =>
             {
-                entity.HasKey(e => e.TnIdPrioridad)
-                    .HasName("PKRA_Prioridad");
+                entity.HasKey(e => e.TnIdPrioridad).HasName("PKRA_Prioridad");
 
                 entity.ToTable("TRA_Prioridad", "AVRS");
 
                 entity.Property(e => e.TnIdPrioridad).HasColumnName("TN_IdPrioridad");
-
                 entity.Property(e => e.TbActiva)
                     .IsRequired()
-                    .HasColumnName("TB_Activa")
-                    .HasDefaultValueSql("((1))");
-
+                    .HasDefaultValueSql("((1))")
+                    .HasColumnName("TB_Activa");
                 entity.Property(e => e.TbEliminada).HasColumnName("TB_Eliminada");
-
                 entity.Property(e => e.TcNombre)
-                    .IsRequired()
-                    .HasColumnName("TC_Nombre")
                     .HasMaxLength(50)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .HasColumnName("TC_Nombre");
             });
 
             modelBuilder.Entity<TraReporte>(entity =>
             {
-                entity.HasKey(e => e.TnIdReporte)
-                    .HasName("PKRA_Reporte");
+                entity.HasKey(e => e.TnIdReporte).HasName("PKRA_Reporte");
 
                 entity.ToTable("TRA_Reporte", "AVRS");
 
                 entity.Property(e => e.TnIdReporte).HasColumnName("TN_IdReporte");
-
                 entity.Property(e => e.TbActivo)
                     .IsRequired()
-                    .HasColumnName("TB_Activo")
-                    .HasDefaultValueSql("((1))");
-
+                    .HasDefaultValueSql("((1))")
+                    .HasColumnName("TB_Activo");
                 entity.Property(e => e.TbEliminado).HasColumnName("TB_Eliminado");
-
                 entity.Property(e => e.TcDescripcion)
-                    .IsRequired()
-                    .HasColumnName("TC_Descripcion")
                     .HasMaxLength(300)
-                    .IsUnicode(false);
-
+                    .IsUnicode(false)
+                    .HasColumnName("TC_Descripcion");
                 entity.Property(e => e.TfFecha)
-                    .HasColumnName("TF_Fecha")
-                    .HasDefaultValueSql("(getdate())");
+                    .HasDefaultValueSql("(getdate())")
+                    .HasColumnName("TF_Fecha");
 
-                entity.Property(e => e.TnEstado).HasColumnName("TN_Estado");
+                entity.HasMany(d => d.TnIdUsuarios).WithMany(p => p.TnIdReportes)
+                    .UsingEntity<Dictionary<string, object>>(
+                        "TraReporteUsuario",
+                        r => r.HasOne<TraUsuario>().WithMany()
+                            .HasForeignKey("TnIdUsuario")
+                            .OnDelete(DeleteBehavior.ClientSetNull)
+                            .HasConstraintName("FKRA_ReporteUsuario_Usuario"),
+                        l => l.HasOne<TraReporte>().WithMany()
+                            .HasForeignKey("TnIdReporte")
+                            .OnDelete(DeleteBehavior.ClientSetNull)
+                            .HasConstraintName("FKRA_ReporteUsuario_Reporte"),
+                        j =>
+                        {
+                            j.HasKey("TnIdReporte", "TnIdUsuario").HasName("PKRA_ReporteUsario");
+                            j.ToTable("TRA_ReporteUsuario", "AVRS");
+                            j.IndexerProperty<int>("TnIdReporte").HasColumnName("TN_IdReporte");
+                            j.IndexerProperty<int>("TnIdUsuario").HasColumnName("TN_IdUsuario");
+                        });
+            });
 
-                entity.Property(e => e.TnOficina).HasColumnName("TN_Oficina");
+            modelBuilder.Entity<TraReporteTipoAveriaPrioridadEstadoOficina>(entity =>
+            {
+                entity.HasKey(e => new { e.TnIdReporte, e.TnIdTipoAveria, e.TnIdPrioridad, e.TnIdEstado, e.TnIdOficina }).HasName("PKRA_ReporteTipoAveriaPrioridadEstadoOficina");
 
-                entity.Property(e => e.TnPrioridad).HasColumnName("TN_Prioridad");
+                entity.ToTable("TRA_ReporteTipoAveriaPrioridadEstadoOficina", "AVRS");
 
-                entity.Property(e => e.TnTipoAveria).HasColumnName("TN_TipoAveria");
+                entity.Property(e => e.TnIdReporte).HasColumnName("TN_IdReporte");
+                entity.Property(e => e.TnIdTipoAveria).HasColumnName("TN_IdTipoAveria");
+                entity.Property(e => e.TnIdPrioridad).HasColumnName("TN_IdPrioridad");
+                entity.Property(e => e.TnIdEstado).HasColumnName("TN_IdEstado");
+                entity.Property(e => e.TnIdOficina).HasColumnName("TN_IdOficina");
 
-                entity.HasOne(d => d.TnEstadoNavigation)
-                    .WithMany(p => p.TraReporte)
-                    .HasForeignKey(d => d.TnEstado)
+                entity.HasOne(d => d.TnIdEstadoNavigation).WithMany(p => p.TraReporteTipoAveriaPrioridadEstadoOficinas)
+                    .HasForeignKey(d => d.TnIdEstado)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKRA_Reporte_Estado");
 
-                entity.HasOne(d => d.TnOficinaNavigation)
-                    .WithMany(p => p.TraReporte)
-                    .HasForeignKey(d => d.TnOficina)
+                entity.HasOne(d => d.TnIdOficinaNavigation).WithMany(p => p.TraReporteTipoAveriaPrioridadEstadoOficinas)
+                    .HasForeignKey(d => d.TnIdOficina)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKRA_Reporte_Oficina");
 
-                entity.HasOne(d => d.TnPrioridadNavigation)
-                    .WithMany(p => p.TraReporte)
-                    .HasForeignKey(d => d.TnPrioridad)
+                entity.HasOne(d => d.TnIdPrioridadNavigation).WithMany(p => p.TraReporteTipoAveriaPrioridadEstadoOficinas)
+                    .HasForeignKey(d => d.TnIdPrioridad)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKRA_Reporte_Prioridad");
 
-                entity.HasOne(d => d.TnTipoAveriaNavigation)
-                    .WithMany(p => p.TraReporte)
-                    .HasForeignKey(d => d.TnTipoAveria)
+                entity.HasOne(d => d.TnIdReporteNavigation).WithMany(p => p.TraReporteTipoAveriaPrioridadEstadoOficinas)
+                    .HasForeignKey(d => d.TnIdReporte)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("PKRA_ReporteTAPEO_Reporte");
+
+                entity.HasOne(d => d.TnIdTipoAveriaNavigation).WithMany(p => p.TraReporteTipoAveriaPrioridadEstadoOficinas)
+                    .HasForeignKey(d => d.TnIdTipoAveria)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKRA_Reporte_TipoAveria");
             });
 
-            modelBuilder.Entity<TraReporteUsuario>(entity =>
-            {
-                entity.HasKey(e => new { e.TnIdReporte, e.TnIdUsuario })
-                    .HasName("PKRA_ReporteUsario");
-
-                entity.ToTable("TRA_ReporteUsuario", "AVRS");
-
-                entity.Property(e => e.TnIdReporte).HasColumnName("TN_IdReporte");
-
-                entity.Property(e => e.TnIdUsuario).HasColumnName("TN_IdUsuario");
-
-                entity.HasOne(d => d.TnIdReporteNavigation)
-                    .WithMany(p => p.TraReporteUsuario)
-                    .HasForeignKey(d => d.TnIdReporte)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FKRA_ReporteUsuario_Reporte");
-
-                entity.HasOne(d => d.TnIdUsuarioNavigation)
-                    .WithMany(p => p.TraReporteUsuario)
-                    .HasForeignKey(d => d.TnIdUsuario)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FKRA_ReporteUsuario_Usuario");
-            });
-
             modelBuilder.Entity<TraTipoAveria>(entity =>
             {
-                entity.HasKey(e => e.TnIdTipoAveria)
-                    .HasName("PKRA_TipoAveria");
+                entity.HasKey(e => e.TnIdTipoAveria).HasName("PKRA_TipoAveria");
 
                 entity.ToTable("TRA_TipoAveria", "AVRS");
 
                 entity.Property(e => e.TnIdTipoAveria).HasColumnName("TN_IdTipoAveria");
-
                 entity.Property(e => e.TbActivo)
                     .IsRequired()
-                    .HasColumnName("TB_Activo")
-                    .HasDefaultValueSql("((1))");
-
+                    .HasDefaultValueSql("((1))")
+                    .HasColumnName("TB_Activo");
                 entity.Property(e => e.TbEliminado).HasColumnName("TB_Eliminado");
-
                 entity.Property(e => e.TcDescripcion)
-                    .HasColumnName("TC_Descripcion")
                     .HasMaxLength(300)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .HasColumnName("TC_Descripcion");
             });
 
             modelBuilder.Entity<TraUsuario>(entity =>
             {
-                entity.HasKey(e => e.TnIdUsuario)
-                    .HasName("PKRA_Usuario");
+                entity.HasKey(e => e.TnIdUsuario).HasName("PKRA_Usuario");
 
                 entity.ToTable("TRA_Usuario", "USRS");
 
                 entity.Property(e => e.TnIdUsuario).HasColumnName("TN_IdUsuario");
-
                 entity.Property(e => e.TbActivo)
                     .IsRequired()
-                    .HasColumnName("TB_Activo")
-                    .HasDefaultValueSql("((1))");
-
+                    .HasDefaultValueSql("((1))")
+                    .HasColumnName("TB_Activo");
                 entity.Property(e => e.TbEliminado).HasColumnName("TB_Eliminado");
-
                 entity.Property(e => e.TcApellido)
-                    .IsRequired()
-                    .HasColumnName("TC_Apellido")
                     .HasMaxLength(50)
-                    .IsUnicode(false);
-
+                    .IsUnicode(false)
+                    .HasColumnName("TC_Apellido");
                 entity.Property(e => e.TcCedula)
-                    .IsRequired()
-                    .HasColumnName("TC_Cedula")
                     .HasMaxLength(9)
-                    .IsUnicode(false);
-
+                    .IsUnicode(false)
+                    .HasColumnName("TC_Cedula");
                 entity.Property(e => e.TcContrasennia)
-                    .IsRequired()
-                    .HasColumnName("TC_Contrasennia")
                     .HasMaxLength(50)
-                    .IsUnicode(false);
-
+                    .IsUnicode(false)
+                    .HasColumnName("TC_Contrasennia");
                 entity.Property(e => e.TcCorreo)
-                    .IsRequired()
-                    .HasColumnName("TC_Correo")
                     .HasMaxLength(50)
-                    .IsUnicode(false);
-
+                    .IsUnicode(false)
+                    .HasColumnName("TC_Correo");
                 entity.Property(e => e.TcNombre)
-                    .IsRequired()
-                    .HasColumnName("TC_Nombre")
                     .HasMaxLength(50)
-                    .IsUnicode(false);
-
+                    .IsUnicode(false)
+                    .HasColumnName("TC_Nombre");
                 entity.Property(e => e.TcRol)
-                    .IsRequired()
-                    .HasColumnName("TC_Rol")
                     .HasMaxLength(15)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .HasColumnName("TC_Rol");
 
-                entity.Property(e => e.TnOficina).HasColumnName("TN_Oficina");
-
-                entity.HasOne(d => d.TnOficinaNavigation)
-                    .WithMany(p => p.TraUsuario)
-                    .HasForeignKey(d => d.TnOficina)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FKRA_Usuario_Oficina");
+                entity.HasMany(d => d.TnIdOficinas).WithMany(p => p.TnIdUsuarios)
+                    .UsingEntity<Dictionary<string, object>>(
+                        "TraUsuarioOficina",
+                        r => r.HasOne<TraOficina>().WithMany()
+                            .HasForeignKey("TnIdOficina")
+                            .OnDelete(DeleteBehavior.ClientSetNull)
+                            .HasConstraintName("FKRA_Usuario_Oficina"),
+                        l => l.HasOne<TraUsuario>().WithMany()
+                            .HasForeignKey("TnIdUsuario")
+                            .OnDelete(DeleteBehavior.ClientSetNull)
+                            .HasConstraintName("FKRA_ReporteUsuario_Usuario"),
+                        j =>
+                        {
+                            j.HasKey("TnIdUsuario", "TnIdOficina").HasName("PKRA_UsuarioOficina");
+                            j.ToTable("TRA_UsuarioOficina", "USRS");
+                            j.IndexerProperty<int>("TnIdUsuario").HasColumnName("TN_IdUsuario");
+                            j.IndexerProperty<int>("TnIdOficina").HasColumnName("TN_IdOficina");
+                        });
             });
+
+            OnModelCreatingPartial(modelBuilder);
         }
+
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }
