@@ -16,4 +16,5 @@ public partial class TraEdificio
     public bool TbEliminado { get; set; }
 
     public virtual ICollection<TraOficinaEdificio> TraOficinaEdificios { get; set; } = new List<TraOficinaEdificio>();
+
 }
