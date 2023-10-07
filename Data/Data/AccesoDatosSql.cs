@@ -77,12 +77,8 @@ namespace Data.Data
         #region CRUDEDIFICIO
         public async Task<List<TraEdificio>> listarEdificio()
         {
-            var edificio = dbContext.TraEdificio
-               .FromSqlRaw(@"exec EDFS.PA_ListarEdificios")
-               .Select(e => new { e.TnIdEdificio, e.TcPropietario, e.TcNombre, e.TbActivo, e.TbEliminado })
-               .ToList();
-            Console.WriteLine("Hola Mundo");
-            return null;
+            var edificio = dbContext.TraEdificio.FromSqlRaw(@"exec EDFS.PA_ListarEdificios").ToList();
+            return edificio;
         }
 
         public bool registarEdificio(TraEdificio edificio)
