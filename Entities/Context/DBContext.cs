@@ -47,7 +47,6 @@ namespace Entities.Context
 
                 entity.Property(e => e.TnIdEdificio).HasColumnName("TN_IdEdificio");
                 entity.Property(e => e.TbActivo)
-                    .IsRequired()
                     .HasDefaultValueSql("((1))")
                     .HasColumnName("TB_Activo");
                 entity.Property(e => e.TbEliminado).HasColumnName("TB_Eliminado");

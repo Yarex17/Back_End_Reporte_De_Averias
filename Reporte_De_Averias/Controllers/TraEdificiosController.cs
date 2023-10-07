@@ -46,33 +46,15 @@ namespace Reporte_De_Averias.Controllers
 
         // PUT: api/TraEdificios/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTraEdificio(int id, TraEdificio traEdificio)
+        [HttpPut]
+
+        [Route(nameof(RegistrarTraEdificio))]
+        public bool RegistrarTraEdificio(string propietario, string nombre)
         {
-            if (id != traEdificio.TnIdEdificio)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(traEdificio).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TraEdificioExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            TraEdificio traEdificio = new TraEdificio();
+            traEdificio.TcPropietario = propietario;
+            traEdificio.TcNombre = nombre;
+            return _negocioSql.registarEdificio(traEdificio);
         }
 
         // POST: api/TraEdificios
