@@ -9,7 +9,7 @@ public partial class TraOficina
 
     public int TnNumeroPiso { get; set; }
 
-    public bool? TbActivo { get; set; }
+    public bool TbActivo { get; set; }
 
     public bool TbEliminado { get; set; }
 

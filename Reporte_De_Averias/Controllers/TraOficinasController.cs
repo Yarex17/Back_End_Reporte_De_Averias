@@ -19,15 +19,16 @@ namespace Reporte_De_Averias.Controllers
 
         // GET: api/TraOficinas
         [HttpGet]
-        [Route(nameof(ListarOficinasPorEdificio))]
-        public Task<List<TraOficina>> ListarOficinasPorEdificio(int id)
+        [Route(nameof(ListarTraOficinasPorTraEdificio))]
+        public Task<List<TraOficina>> ListarTraOficinasPorTraEdificio(int id)
         {
             return _negocioSql.listarOficina(id);
         }
 
         // GET: api/TraOficinas/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<TraOficina>> GetTraOficina(int id)
+        [HttpGet]
+        [Route(nameof(BuscarTraOficina))]
+        public async Task<ActionResult<TraOficina>> BuscarTraOficina(int id)
         {
           if (_context.TraOficina == null)
           {
@@ -45,67 +46,35 @@ namespace Reporte_De_Averias.Controllers
 
         // PUT: api/TraOficinas/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTraOficina(int id, TraOficina traOficina)
+        [HttpPut]
+        [Route(nameof(CrearTraOficina))]
+        public bool CrearTraOficina(int numeroPiso, int idEdificio)
         {
-            if (id != traOficina.TnIdOficina)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(traOficina).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TraOficinaExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return _negocioSql.registarOficina(numeroPiso, idEdificio);
         }
 
         // POST: api/TraOficinas
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TraOficina>> PostTraOficina(TraOficina traOficina)
+        [Route(nameof(ModificarTraOficina))]
+        public bool ModificarTraOficina(int idOficina, int numeroPiso, bool activa)
         {
-          if (_context.TraOficina == null)
-          {
-              return Problem("Entity set 'DBContext.TraOficina'  is null.");
-          }
-            _context.TraOficina.Add(traOficina);
-            await _context.SaveChangesAsync();
+          
+            TraOficina traOficina = new TraOficina();
+            traOficina.TnIdOficina = idOficina;
+            traOficina.TnNumeroPiso = numeroPiso;
+            traOficina.TbActivo = activa;
 
-            return CreatedAtAction("GetTraOficina", new { id = traOficina.TnIdOficina }, traOficina);
+            return _negocioSql.modificarOficina(traOficina);
         }
 
         // DELETE: api/TraOficinas/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTraOficina(int id)
+        [HttpPost]
+        [Route(nameof(EliminarTraOficina))]
+        public async Task<IActionResult> EliminarTraOficina(int id)
         {
-            if (_context.TraOficina == null)
-            {
-                return NotFound();
-            }
-            var traOficina = await _context.TraOficina.FindAsync(id);
-            if (traOficina == null)
-            {
-                return NotFound();
-            }
-
-            _context.TraOficina.Remove(traOficina);
-            await _context.SaveChangesAsync();
-
+            _negocioSql.eliminarOficina(id);
             return NoContent();
         }
 

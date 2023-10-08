@@ -91,17 +91,23 @@ namespace Negocio
         {
             return _accesoDatosSQL.listarOficina(id);
         }
-        public void registarOficina(TraOficina oficina)
+        public bool registarOficina(int numeroPiso, int idEdificio)
         {
-            _accesoDatosSQL.registarOficina(oficina);
+            return _accesoDatosSQL.registarOficina(numeroPiso, idEdificio);
         }
         public TraOficina buscarOficina(int id)
         {
             return _accesoDatosSQL.buscarOficina(id);
         }
-        public void eliminarOficina(TraOficina oficina)
+
+        public bool modificarOficina(TraOficina traOficina)
         {
-            _accesoDatosSQL.eliminarOficina(oficina);
+            return _accesoDatosSQL.modificarOficina(traOficina);
+        }
+
+        public void eliminarOficina(int id)
+        {
+            _accesoDatosSQL.eliminarOficina(id);
         }
         #endregion
 

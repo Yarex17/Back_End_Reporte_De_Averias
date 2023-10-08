@@ -195,13 +195,22 @@ namespace Data.Data
             return oficina;
         }
 
-        public void registarOficina(TraOficina oficina)
+        public bool registarOficina(int numeroPiso, int idEdificio)
         {
             var parameters = new[]
-           {
-                new SqlParameter("@TC_Numero_De_Piso", oficina.TnNumeroPiso)
+            {
+                new SqlParameter("@TN_NumeroPiso", numeroPiso),
+                new SqlParameter("@TN_IdEdificio", idEdificio)
             };
-            dbContext.TraOficina.FromSqlRaw(@"exec EDFS.PA_CrearOficina @TC_Numero_De_Piso,@TC_Oficina", parameters).ToList().FirstOrDefault();
+            try
+            {
+                dbContext.TraOficina.FromSqlRaw(@"exec EDFS.PA_CrearOficina @TN_NumeroPiso, @TN_IdEdificio", parameters).ToList().FirstOrDefault();
+                return false;
+            }
+            catch (Exception ex) {
+                
+            }
+            return true; 
         }
 
         public TraOficina buscarOficina(int id)
@@ -212,13 +221,35 @@ namespace Data.Data
             return oficina;
         }
 
+        public bool modificarOficina(TraOficina traOficina)
+        {
+            int activo = traOficina.TbActivo ? 1 : 0;
+            var parameters = new[]
+            {
+                new SqlParameter("@TN_IdOficina", traOficina.TnIdOficina),
+                new SqlParameter("@TN_NumeroPiso",traOficina.TnNumeroPiso),
+                new SqlParameter("@TB_Activa", activo)
+            };
 
-        public async Task<TraOficina> eliminarOficina(TraOficina oficina)
+            try
+            {
+                dbContext.TraEdificio.FromSqlRaw(@"exec EDFS.PA_ActualizarOficina @TN_IdOficina, @TN_NumeroPiso, @TB_Activa", parameters).ToList().FirstOrDefault();
+                return false;
+            }
+            catch (Exception ex)
+            {
+
+            };
+
+            return true;
+        }
+
+        public async Task<TraOficina> eliminarOficina(int id)
         {
             var parameter = new List<SqlParameter>();
-            parameter.Add(new SqlParameter("@TN_IdOficina", oficina.TnIdOficina));
-            TraOficina Oficina1 = dbContext.TraOficina.FromSqlRaw(@"exec AVRS.PA_EliminarOficina @TN_IdOficina", parameter.ToArray()).ToList().FirstOrDefault();
-            return Oficina1;
+            parameter.Add(new SqlParameter("@TN_IdOficina", id));
+            TraOficina oficina1 = dbContext.TraOficina.FromSqlRaw(@"exec EDFS.PA_EliminarOficina @TN_IdOficina", parameter.ToArray()).ToList().FirstOrDefault();
+            return oficina1;
         }
 
         #endregion
