@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Entities.Context;
+using Negocio;
 
 namespace Reporte_De_Averias.Controllers
 {
@@ -13,22 +14,15 @@ namespace Reporte_De_Averias.Controllers
     [ApiController]
     public class TraOficinasController : ControllerBase
     {
-        private readonly DBContext _context;
-
-        public TraOficinasController(DBContext context)
-        {
-            _context = context;
-        }
+        private readonly DBContext _context = new DBContext();
+        private readonly NegocioSQL _negocioSql = new NegocioSQL();
 
         // GET: api/TraOficinas
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TraOficina>>> GetTraOficina()
+        [Route(nameof(ListarOficinasPorEdificio))]
+        public Task<List<TraOficina>> ListarOficinasPorEdificio(int id)
         {
-          if (_context.TraOficina == null)
-          {
-              return NotFound();
-          }
-            return await _context.TraOficina.ToListAsync();
+            return _negocioSql.listarOficina(id);
         }
 
         // GET: api/TraOficinas/5

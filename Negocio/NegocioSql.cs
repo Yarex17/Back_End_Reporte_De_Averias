@@ -87,9 +87,9 @@ namespace Negocio
 
         #region CRUDOFICINA
 
-        public Task<List<TraOficina>> listarOficina()
+        public Task<List<TraOficina>> listarOficina(int id)
         {
-            return _accesoDatosSQL.listarOficina();
+            return _accesoDatosSQL.listarOficina(id);
         }
         public void registarOficina(TraOficina oficina)
         {
