@@ -107,18 +107,29 @@ namespace Data.Data
             return edificio;
         }
 
-        public async Task<TraEdificio> modificarEdificio(TraEdificio edificio)
+        public bool modificarEdificio(TraEdificio edificio)
         {
-            var parameter = new List<SqlParameter>();
-            parameter.Add(new SqlParameter("@TN_IdEdificio", edificio.TnIdEdificio));
-            parameter.Add(new SqlParameter("@TC_Propietario", edificio.TcNombre));
-            parameter.Add(new SqlParameter("@TC_Nombre", edificio.TcPropietario));
-            parameter.Add(new SqlParameter("@TB_Activo", edificio.TbActivo));
-            TraEdificio edificio1 = dbContext.TraEdificio.FromSqlRaw(@"exec EDFS.PA_ActualizarEdificio @TC_Propietario, @TC_Nombre, @TC_Activo", parameter.ToArray()).ToList().FirstOrDefault();
-            return edificio1;
+            int activo = edificio.TbActivo ? 1 : 0;
+            var parameters = new[]
+            { 
+                new SqlParameter("@TN_IdEdificio", edificio.TnIdEdificio),
+                new SqlParameter("@TC_Propietario",edificio.TcPropietario),
+                new SqlParameter("@TC_Nombre", edificio.TcNombre),
+                new SqlParameter("@TB_Activo", activo)
+            };
 
+            try 
+            {
+                dbContext.TraEdificio.FromSqlRaw(@"exec EDFS.PA_ActualizarEdificio @TN_IdEdificio, @TC_Propietario, @TC_Nombre, @TB_Activo", parameters).ToList().FirstOrDefault();
+                return true;
+            }
+            catch (Exception ex) { 
+            
+            };
+
+            return false;
         }
-        //Hola
+
         public async Task<TraEdificio> eliminarEdificio(int id)
         {
             var parameter = new List<SqlParameter>();

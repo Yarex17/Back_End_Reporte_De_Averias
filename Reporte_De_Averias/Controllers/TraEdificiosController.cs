@@ -61,11 +61,14 @@ namespace Reporte_De_Averias.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Route(nameof(ModificarTraEdificio))]
-        public bool ModificarTraEdificio(TraEdificio traEdificio)
+        public bool ModificarTraEdificio(int id, string propietario, string nombre, bool activo)
         {
-
-            _negocioSql.eliminarEdificio(traEdificio.TnIdEdificio);
-            return true;
+            TraEdificio traEdificio = new TraEdificio();
+            traEdificio.TnIdEdificio = id;
+            traEdificio.TcPropietario = propietario;
+            traEdificio.TcNombre = nombre;
+            traEdificio.TbActivo = activo;
+            return _negocioSql.modificarEdificio(traEdificio);
         }
 
         // DELETE: api/TraEdificios/5
