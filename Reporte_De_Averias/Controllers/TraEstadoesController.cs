@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Entities.Context;
+using Negocio;
 
 namespace Reporte_De_Averias.Controllers
 {
@@ -13,32 +14,28 @@ namespace Reporte_De_Averias.Controllers
     [ApiController]
     public class TraEstadoesController : ControllerBase
     {
-        private readonly DBContext _context;
+        private readonly DBContext _context= new DBContext();
+        private readonly NegocioSQL _negocioSql = new NegocioSQL();
 
-        public TraEstadoesController(DBContext context)
-        {
-            _context = context;
-        }
 
         // GET: api/TraEstadoes
+        // GET: api/TraEstados
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TraEstado>>> GetTraEstado()
+        [Route(nameof(ListarTraEstadosPorTraEdificio))]
+        public Task<List<TraEstado>> ListarTraEstadosPorTraEdificio()
         {
-          if (_context.TraEstado == null)
-          {
-              return NotFound();
-          }
-            return await _context.TraEstado.ToListAsync();
+            return _negocioSql.listarEstado();
         }
 
-        // GET: api/TraEstadoes/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<TraEstado>> GetTraEstado(int id)
+        // GET: api/TraEstados/5
+        [HttpGet]
+        [Route(nameof(BuscarTraEstado))]
+        public async Task<ActionResult<TraEstado>> BuscarTraEstado(int id)
         {
-          if (_context.TraEstado == null)
-          {
-              return NotFound();
-          }
+            if (_context.TraEstado == null)
+            {
+                return NotFound();
+            }
             var traEstado = await _context.TraEstado.FindAsync(id);
 
             if (traEstado == null)
@@ -49,69 +46,37 @@ namespace Reporte_De_Averias.Controllers
             return traEstado;
         }
 
-        // PUT: api/TraEstadoes/5
+        // PUT: api/TraEstados/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTraEstado(int id, TraEstado traEstado)
+        [HttpPut]
+        [Route(nameof(CrearTraEstado))]
+        public bool CrearTraEstado(String nombre)
         {
-            if (id != traEstado.TnIdEstado)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(traEstado).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TraEstadoExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return _negocioSql.registarEstado(nombre);
         }
 
-        // POST: api/TraEstadoes
+        // POST: api/TraEstados
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TraEstado>> PostTraEstado(TraEstado traEstado)
+        [Route(nameof(ModificarEstado))]
+        public bool ModificarEstado(int idEstado, String nombre, bool activa)
         {
-          if (_context.TraEstado == null)
-          {
-              return Problem("Entity set 'DBContext.TraEstado'  is null.");
-          }
-            _context.TraEstado.Add(traEstado);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTraEstado", new { id = traEstado.TnIdEstado }, traEstado);
+            TraEstado traEstado = new TraEstado();
+            traEstado.TnIdEstado = idEstado;
+            traEstado.TcNombre = nombre;
+            traEstado.TbActivo = activa;
+            _negocioSql.modificarEstado(traEstado);
+            return true;
         }
 
-        // DELETE: api/TraEstadoes/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTraEstado(int id)
+        // DELETE: api/TraEstados/5
+        [HttpPost]
+        [Route(nameof(EliminarTraEstado))]
+        public async Task<IActionResult> EliminarTraEstado(int id)
         {
-            if (_context.TraEstado == null)
-            {
-                return NotFound();
-            }
-            var traEstado = await _context.TraEstado.FindAsync(id);
-            if (traEstado == null)
-            {
-                return NotFound();
-            }
-
-            _context.TraEstado.Remove(traEstado);
-            await _context.SaveChangesAsync();
-
+            _negocioSql.eliminarEstado(id);
             return NoContent();
         }
 

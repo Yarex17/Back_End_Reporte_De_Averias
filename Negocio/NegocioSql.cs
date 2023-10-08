@@ -67,21 +67,21 @@ namespace Negocio
         {
             return _accesoDatosSQL.listarEstado();
         }
-        public void registarEstado(TraEstado estado)
+        public bool registarEstado(String nombre)
         {
-            _accesoDatosSQL.registarEstado(estado);
+            return _accesoDatosSQL.registarEstado(nombre);
         }
         public TraEstado buscarEstado(string nombre)
         {
             return _accesoDatosSQL.buscarEstado(nombre);
         }
-        public void modificarEstado(TraEstado estado)
+        public bool modificarEstado(TraEstado estado)
         {
-            _accesoDatosSQL.modificarEstado(estado);
+            return _accesoDatosSQL.modificarEstado(estado);
         }
-        public void eliminarEstado(TraEstado estado)
+        public void eliminarEstado(int id)
         {
-            _accesoDatosSQL.eliminarEstado(estado);
+            _accesoDatosSQL.eliminarEstado(id);
         }
         #endregion
 
@@ -117,21 +117,21 @@ namespace Negocio
         {
             return _accesoDatosSQL.listarPrioridad();
         }
-        public void registarPrioridad(TraPrioridad prioridad)
+        public bool registarPrioridad(String nombre, bool activa, int eliminada)
         {
-            _accesoDatosSQL.registarPrioridad(prioridad);
+            return _accesoDatosSQL.registarPrioridad(nombre,activa,eliminada);
         }
         public TraPrioridad buscarPrioridad(string nombre)
         {
             return _accesoDatosSQL.buscarPrioridad(nombre);
         }
-        public void modificarPrioridad(TraPrioridad prioridad)
+        public bool modificarPrioridad(TraPrioridad prioridad)
         {
-            _accesoDatosSQL.modificarPrioridad(prioridad);
+            return _accesoDatosSQL.modificarPrioridad(prioridad);
         }
-        public void eliminarPrioridad(TraPrioridad prioridad)
+        public void eliminarPrioridad(int id)
         {
-            _accesoDatosSQL.eliminarPrioridad(prioridad);
+            _accesoDatosSQL.eliminarPrioridad(id);
         }
         #endregion
 
@@ -141,21 +141,21 @@ namespace Negocio
         {
             return _accesoDatosSQL.listarReporte();
         }
-        public void registarReporte(TraReporte reporte)
+        public bool registarReporte(int id, String descripcion, bool activo, bool eliminado)
         {
-            _accesoDatosSQL.registarReporte(reporte);
+            return _accesoDatosSQL.registarReporte(id, descripcion, activo, eliminado);
         }
         public TraReporte buscarReporte(int id)
         {
             return _accesoDatosSQL.buscarReporte(id);
         }
-        public void modificarReporte(TraReporte reporte)
+        public bool modificarReporte(TraReporte reporte)
         {
-            _accesoDatosSQL.modificarReporte(reporte);
+            return _accesoDatosSQL.modificarReporte(reporte);
         }
-        public void eliminarReporte(TraReporte reporte)
+        public void eliminarReporte(int id)
         {
-            _accesoDatosSQL.eliminarReporte(reporte);
+            _accesoDatosSQL.eliminarReporte(id);
         }
         #endregion
 
@@ -165,17 +165,17 @@ namespace Negocio
         {
             return _accesoDatosSQL.listarTipoAveria();
         }
-        public void registarTipoAveria(TraTipoAveria tipoAveria)
+        public bool registarTipoAveria(TraTipoAveria tipoAveria)
         {
-            _accesoDatosSQL.registarTipoAveria(tipoAveria);
+            return _accesoDatosSQL.registarTipoAveria(tipoAveria);
         }
         public TraTipoAveria buscarTipoAveria(string nombre)
         {
             return _accesoDatosSQL.buscarTipoAveria(nombre);
         }
-        public void modificarTipoAveria(TraTipoAveria tipoAveria)
+        public bool modificarTipoAveria(TraTipoAveria tipoAveria)
         {
-            _accesoDatosSQL.modificarTipoAveria(tipoAveria);
+           return _accesoDatosSQL.modificarTipoAveria(tipoAveria);
         }
         public void eliminarTipoAveria(TraTipoAveria tipoAveria)
         {
