@@ -9,7 +9,7 @@ namespace Entities.Context
 
         public string? TcDescripcion { get; set; }
 
-        public bool? TbActivo { get; set; }
+        public bool TbActivo { get; set; }
 
         public bool TbEliminado { get; set; }
 

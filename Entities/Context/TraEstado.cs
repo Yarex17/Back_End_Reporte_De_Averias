@@ -9,7 +9,7 @@ public partial class TraEstado
 
     public string TcNombre { get; set; } = null!;
 
-    public bool? TbActivo { get; set; }
+    public bool TbActivo { get; set; }
 
     public bool TbEliminado { get; set; }
 

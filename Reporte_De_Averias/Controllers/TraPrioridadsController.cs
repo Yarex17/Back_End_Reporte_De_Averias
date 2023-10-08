@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Entities.Context;
+using Negocio;
 
 namespace Reporte_De_Averias.Controllers
 {
@@ -13,32 +14,26 @@ namespace Reporte_De_Averias.Controllers
     [ApiController]
     public class TraPrioridadsController : ControllerBase
     {
-        private readonly DBContext _context;
-
-        public TraPrioridadsController(DBContext context)
-        {
-            _context = context;
-        }
+        private readonly DBContext _context = new DBContext();
+        private readonly NegocioSQL _negocioSql = new NegocioSQL();
 
         // GET: api/TraPrioridads
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TraPrioridad>>> GetTraPrioridad()
+        [Route(nameof(ListarTraPrioridadsPorTraEdificio))]
+        public Task<List<TraPrioridad>> ListarTraPrioridadsPorTraEdificio(int id)
         {
-          if (_context.TraPrioridad == null)
-          {
-              return NotFound();
-          }
-            return await _context.TraPrioridad.ToListAsync();
+            return _negocioSql.listarPrioridad();
         }
 
         // GET: api/TraPrioridads/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<TraPrioridad>> GetTraPrioridad(int id)
+        [HttpGet]
+        [Route(nameof(BuscarTraPrioridad))]
+        public async Task<ActionResult<TraPrioridad>> BuscarTraPrioridad(int id)
         {
-          if (_context.TraPrioridad == null)
-          {
-              return NotFound();
-          }
+            if (_context.TraPrioridad == null)
+            {
+                return NotFound();
+            }
             var traPrioridad = await _context.TraPrioridad.FindAsync(id);
 
             if (traPrioridad == null)
@@ -51,67 +46,35 @@ namespace Reporte_De_Averias.Controllers
 
         // PUT: api/TraPrioridads/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTraPrioridad(int id, TraPrioridad traPrioridad)
+        [HttpPut]
+        [Route(nameof(CrearTraPrioridad))]
+        public bool CrearTraPrioridad(String nombre, bool activa, int eliminada)
         {
-            if (id != traPrioridad.TnIdPrioridad)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(traPrioridad).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TraPrioridadExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return _negocioSql.registarPrioridad(nombre,activa,eliminada);
         }
 
         // POST: api/TraPrioridads
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TraPrioridad>> PostTraPrioridad(TraPrioridad traPrioridad)
+        [Route(nameof(ModificarPrioridad))]
+        public bool ModificarPrioridad(int idPrioridad, String nombre, bool activa)
         {
-          if (_context.TraPrioridad == null)
-          {
-              return Problem("Entity set 'DBContext.TraPrioridad'  is null.");
-          }
-            _context.TraPrioridad.Add(traPrioridad);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTraPrioridad", new { id = traPrioridad.TnIdPrioridad }, traPrioridad);
+            TraPrioridad traPrioridad = new TraPrioridad();
+            traPrioridad.TnIdPrioridad = idPrioridad;
+            traPrioridad.TcNombre = nombre;
+            traPrioridad.TbActiva = activa;
+            _negocioSql.modificarPrioridad(traPrioridad);
+            return true;
         }
 
         // DELETE: api/TraPrioridads/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTraPrioridad(int id)
+        [HttpPost]
+        [Route(nameof(EliminarTraPrioridad))]
+        public async Task<IActionResult> EliminarTraPrioridad(int id)
         {
-            if (_context.TraPrioridad == null)
-            {
-                return NotFound();
-            }
-            var traPrioridad = await _context.TraPrioridad.FindAsync(id);
-            if (traPrioridad == null)
-            {
-                return NotFound();
-            }
-
-            _context.TraPrioridad.Remove(traPrioridad);
-            await _context.SaveChangesAsync();
-
+            _negocioSql.eliminarPrioridad(id);
             return NoContent();
         }
 

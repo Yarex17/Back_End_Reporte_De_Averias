@@ -57,16 +57,16 @@ namespace Reporte_De_Averias.Controllers
         // POST: api/TraOficinas
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Route(nameof(ModificarTraOficina))]
-        public bool ModificarTraOficina(int idOficina, int numeroPiso, bool activa)
+        [Route(nameof(ModificarOficina))]
+        public bool ModificarOficina(int idOficina, int numeroPiso, bool activa)
         {
           
             TraOficina traOficina = new TraOficina();
             traOficina.TnIdOficina = idOficina;
             traOficina.TnNumeroPiso = numeroPiso;
             traOficina.TbActivo = activa;
-
-            return _negocioSql.modificarOficina(traOficina);
+            _negocioSql.modificarOficina(traOficina);
+            return true;
         }
 
         // DELETE: api/TraOficinas/5

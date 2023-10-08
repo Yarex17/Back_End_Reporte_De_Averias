@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Entities.Context;
+using Negocio;
 
 namespace Reporte_De_Averias.Controllers
 {
@@ -13,32 +14,26 @@ namespace Reporte_De_Averias.Controllers
     [ApiController]
     public class TraReportesController : ControllerBase
     {
-        private readonly DBContext _context;
-
-        public TraReportesController(DBContext context)
-        {
-            _context = context;
-        }
+        private readonly DBContext _context = new DBContext();
+        private readonly NegocioSQL _negocioSql = new NegocioSQL();
 
         // GET: api/TraReportes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TraReporte>>> GetTraReporte()
+        [Route(nameof(ListarTraReportesPorTraEdificio))]
+        public Task<List<TraReporte>> ListarTraReportesPorTraEdificio(int id)
         {
-          if (_context.TraReporte == null)
-          {
-              return NotFound();
-          }
-            return await _context.TraReporte.ToListAsync();
+            return _negocioSql.listarReporte();
         }
 
         // GET: api/TraReportes/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<TraReporte>> GetTraReporte(int id)
+        [HttpGet]
+        [Route(nameof(BuscarTraReporte))]
+        public async Task<ActionResult<TraReporte>> BuscarTraReporte(int id)
         {
-          if (_context.TraReporte == null)
-          {
-              return NotFound();
-          }
+            if (_context.TraReporte == null)
+            {
+                return NotFound();
+            }
             var traReporte = await _context.TraReporte.FindAsync(id);
 
             if (traReporte == null)
@@ -51,67 +46,36 @@ namespace Reporte_De_Averias.Controllers
 
         // PUT: api/TraReportes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTraReporte(int id, TraReporte traReporte)
+        [HttpPut]
+        [Route(nameof(CrearTraReporte))]
+        public bool CrearTraReporte(int id, String descripcion, bool activo, bool eliminado)
         {
-            if (id != traReporte.TnIdReporte)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(traReporte).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TraReporteExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return _negocioSql.registarReporte(id, descripcion, activo, eliminado);
         }
 
         // POST: api/TraReportes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TraReporte>> PostTraReporte(TraReporte traReporte)
+        [Route(nameof(ModificarReporte))]
+        public bool ModificarReporte(int id,String descripcion, bool activo, bool eliminado)
         {
-          if (_context.TraReporte == null)
-          {
-              return Problem("Entity set 'DBContext.TraReporte'  is null.");
-          }
-            _context.TraReporte.Add(traReporte);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTraReporte", new { id = traReporte.TnIdReporte }, traReporte);
+            TraReporte traReporte = new TraReporte();
+            traReporte.TnIdReporte = id;
+            traReporte.TcDescripcion = descripcion;
+            traReporte.TbActivo = activo;
+            traReporte.TbEliminado = eliminado;
+            _negocioSql.modificarReporte(traReporte);
+            return true;
         }
 
         // DELETE: api/TraReportes/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTraReporte(int id)
+        [HttpPost]
+        [Route(nameof(EliminarTraReporte))]
+        public async Task<IActionResult> EliminarTraReporte(int id)
         {
-            if (_context.TraReporte == null)
-            {
-                return NotFound();
-            }
-            var traReporte = await _context.TraReporte.FindAsync(id);
-            if (traReporte == null)
-            {
-                return NotFound();
-            }
-
-            _context.TraReporte.Remove(traReporte);
-            await _context.SaveChangesAsync();
-
+            _negocioSql.eliminarReporte(id);
             return NoContent();
         }
 

@@ -11,7 +11,7 @@ public partial class TraReporte
 
     public DateTime TfFecha { get; set; }
 
-    public bool? TbActivo { get; set; }
+    public bool TbActivo { get; set; }
 
     public bool TbEliminado { get; set; }
 
