@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Entities.Context;
+using Negocio;
 
 namespace Reporte_De_Averias.Controllers
 {
@@ -13,16 +14,13 @@ namespace Reporte_De_Averias.Controllers
     [ApiController]
     public class TraUsuariosController : ControllerBase
     {
-        private readonly DBContext _context;
-
-        public TraUsuariosController(DBContext context)
-        {
-            _context = context;
-        }
+        private readonly DBContext _context = new DBContext();
+        private readonly NegocioSQL _negocioSql = new NegocioSQL();
 
         // GET: api/TraUsuarios
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TraUsuario>>> GetTraUsuario()
+        [Route(nameof(ListarTraUsario))]
+        public async Task<ActionResult<IEnumerable<TraUsuario>>> ListarTraUsario()
         {
           if (_context.TraUsuario == null)
           {
@@ -32,8 +30,10 @@ namespace Reporte_De_Averias.Controllers
         }
 
         // GET: api/TraUsuarios/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<TraUsuario>> GetTraUsuario(int id)
+        [HttpGet]
+
+        [Route(nameof(BuscarTraUsario))]
+        public async Task<ActionResult<TraUsuario>> BuscarTraUsario(int id)
         {
           if (_context.TraUsuario == null)
           {
@@ -51,67 +51,44 @@ namespace Reporte_De_Averias.Controllers
 
         // PUT: api/TraUsuarios/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTraUsuario(int id, TraUsuario traUsuario)
+        [HttpPut]
+        [Route(nameof(CrearTraUsario))]
+        public bool CrearTraUsario(string rol, string nombre, string apellido, string cedula, string correo, string contrasennia,int idOficina)
         {
-            if (id != traUsuario.TnIdUsuario)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(traUsuario).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TraUsuarioExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            TraUsuario traUsuario = new TraUsuario();
+            traUsuario.TcRol = rol;
+            traUsuario.TcNombre = nombre;
+            traUsuario.TcApellido = apellido;
+            traUsuario.TcCedula = cedula;
+            traUsuario.TcCorreo = correo;
+            traUsuario.TcContrasennia = contrasennia;
+            return _negocioSql.registarUsuario(traUsuario, idOficina);
         }
 
         // POST: api/TraUsuarios
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TraUsuario>> PostTraUsuario(TraUsuario traUsuario)
+        [Route(nameof(ModificarTraUsario))]
+        public bool ModificarTraUsario(int id, string rol, string nombre, string apellido, string cedula, string correo, string contrasennia, bool activo, int idOficinaNueva)
         {
-          if (_context.TraUsuario == null)
-          {
-              return Problem("Entity set 'DBContext.TraUsuario'  is null.");
-          }
-            _context.TraUsuario.Add(traUsuario);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetTraUsuario", new { id = traUsuario.TnIdUsuario }, traUsuario);
+            TraUsuario traUsuario = new TraUsuario();
+            traUsuario.TnIdUsuario = id;
+            traUsuario.TcRol = rol;
+            traUsuario.TcNombre = nombre;
+            traUsuario.TcApellido = apellido;
+            traUsuario.TcCedula = cedula;
+            traUsuario.TcCorreo = correo;
+            traUsuario.TcContrasennia = contrasennia;
+            traUsuario.TbActivo = activo;
+            return _negocioSql.modificarUsuario(traUsuario, idOficinaNueva);
         }
 
         // DELETE: api/TraUsuarios/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTraUsuario(int id)
+        [HttpPost]
+        [Route(nameof(EliminarTraUsario))]
+        public async Task<IActionResult> EliminarTraUsario(int id)
         {
-            if (_context.TraUsuario == null)
-            {
-                return NotFound();
-            }
-            var traUsuario = await _context.TraUsuario.FindAsync(id);
-            if (traUsuario == null)
-            {
-                return NotFound();
-            }
-
-            _context.TraUsuario.Remove(traUsuario);
-            await _context.SaveChangesAsync();
-
+            _negocioSql.eliminarUsuario(id);
             return NoContent();
         }
 

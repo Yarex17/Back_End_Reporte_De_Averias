@@ -20,11 +20,11 @@ namespace Data.Data
 
         public async Task<List<TraUsuario>> listarUsuario()
         {
-            var usuario = dbContext.TraUsuario.FromSqlRaw(@"exec AVRS.PA_BuscarUsuario").ToList();
+            var usuario = dbContext.TraUsuario.FromSqlRaw(@"exec USRS.PA_ListarUsuarios").ToList();
             return usuario;
         }
 
-        public void registarUsuario(TraUsuario usuario)
+        public bool registarUsuario(TraUsuario usuario, int idOficina)
         {
             var parameters = new[]
             {
@@ -34,8 +34,18 @@ namespace Data.Data
                 new SqlParameter("@TC_Cedula", usuario.TcCedula),
                 new SqlParameter("@TC_Correo", usuario.TcCorreo),
                 new SqlParameter("@TC_Contrasennia", usuario.TcContrasennia),
+                new SqlParameter("@TN_IdOficina", idOficina),
             };
-            dbContext.TraUsuario.FromSqlRaw(@"exec AVRS.PA_CrearUsuario @TC_Rol, @TC_Nombre, @TC_Apellido, @TC_Cedula, @TC_Correo, @TC_Contrasennia", parameters).ToList().FirstOrDefault();
+            try
+            {
+                dbContext.TraUsuario.FromSqlRaw(@"exec USRS.PA_CrearUsuario @TC_Rol, @TC_Nombre, @TC_Apellido, @TC_Cedula, @TC_Correo, @TC_Contrasennia, @TN_IdOficina", parameters).ToList().FirstOrDefault();
+                return false;
+            }
+            catch (Exception ex){
+
+            }
+            return true;
+            
         }
 
         public TraUsuario buscarUsuario(string nombre)
@@ -46,27 +56,37 @@ namespace Data.Data
             return usuario;
         }
 
-        public async Task<TraUsuario> modificarUsuario(TraUsuario usuario)
+        public bool modificarUsuario(TraUsuario usuario, int idOficinaNueva)
         {
-            var parameter = new List<SqlParameter>();
-            parameter.Add(new SqlParameter("@TN_IdUsuario", usuario.TnIdUsuario));
-            parameter.Add(new SqlParameter("@TC_Rol", usuario.TcRol));
-            parameter.Add(new SqlParameter("@TC_Nombre", usuario.TcNombre));
-            parameter.Add(new SqlParameter("@TC_Apellido", usuario.TcApellido));
-            parameter.Add(new SqlParameter("@TC_Cedula", usuario.TcCedula));
-            parameter.Add(new SqlParameter("@TC_Correo", usuario.TcCorreo));
-            parameter.Add(new SqlParameter("@TC_Contrasennia", usuario.TcCorreo));
-            parameter.Add(new SqlParameter("@TB_Activo", usuario.TcContrasennia));
-            TraUsuario usuario1 = dbContext.TraUsuario.FromSqlRaw(@"exec AVRS.PA_ActualizarUsuario @TC_Rol, @TC_Nombre, @TC_Apellido, @TC_Cedula, @TC_Correo, @TC_Contrasennia, @TC_Activo", parameter.ToArray()).ToList().FirstOrDefault();
-            return usuario1;
+            int activo = usuario.TbActivo ? 1 : 0;
+            var parameters = new[]
+            {
+                new SqlParameter("@TN_IdUsuario", usuario.TnIdUsuario),
+                new SqlParameter("@TC_Rol", usuario.TcRol),
+                new SqlParameter("@TC_Nombre", usuario.TcNombre),
+                new SqlParameter("@TC_Apellido", usuario.TcApellido),
+                new SqlParameter("@TC_Cedula", usuario.TcCedula),
+                new SqlParameter("@TC_Correo", usuario.TcCorreo),
+                new SqlParameter("@TC_Contrasennia", usuario.TcContrasennia),
+                new SqlParameter("@TB_Activo", activo),
+                new SqlParameter("@TN_IdOficinaNueva", idOficinaNueva),
+            };
+            try
+            {
+                dbContext.TraUsuario.FromSqlRaw(@"exec USRS.PA_ActualizarUsuario @TN_IdUsuario, @TC_Rol, @TC_Nombre, @TC_Apellido, @TC_Cedula, @TC_Correo, @TC_Contrasennia, @TB_Activo, @TN_IdOficinaNueva", parameters).ToList().FirstOrDefault();
+                return false;
+            }
+            catch (Exception ex){
 
+            }
+            return true;
         }
 
-        public async Task<TraUsuario> eliminarUsuario(TraUsuario usuario)
+        public async Task<TraUsuario> eliminarUsuario(int id)
         {
             var parameter = new List<SqlParameter>();
-            parameter.Add(new SqlParameter("@TN_IdUsuario", usuario.TnIdUsuario));
-            TraUsuario usuario1 = dbContext.TraUsuario.FromSqlRaw(@"exec AVRS.PA_EliminarUsuario @TN_IdUsuario", parameter.ToArray()).ToList().FirstOrDefault();
+            parameter.Add(new SqlParameter("@TN_IdUsuario", id));
+            TraUsuario usuario1 = dbContext.TraUsuario.FromSqlRaw(@"exec USRS.PA_EliminarUsuario @TN_IdUsuario", parameter.ToArray()).ToList().FirstOrDefault();
             return usuario1;
         }
 

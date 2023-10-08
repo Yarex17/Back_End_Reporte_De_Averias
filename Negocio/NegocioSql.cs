@@ -19,21 +19,21 @@ namespace Negocio
         {
             return _accesoDatosSQL.listarUsuario();
         }
-        public void registarUsuario(TraUsuario usuario)
+        public bool registarUsuario(TraUsuario usuario, int idOficina)
         {
-            _accesoDatosSQL.registarUsuario(usuario);
+            return _accesoDatosSQL.registarUsuario(usuario, idOficina);
         }
         public TraUsuario buscarUsuario(string nombre)
         {
             return _accesoDatosSQL.buscarUsuario(nombre);
         }
-        public void modificarUsuario(TraUsuario usuario)
+        public bool modificarUsuario(TraUsuario usuario, int idOficinaNueva)
         {
-            _accesoDatosSQL.modificarUsuario(usuario);
+            return _accesoDatosSQL.modificarUsuario(usuario, idOficinaNueva);
         }
-        public void eliminarUsuario(TraUsuario usuario)
+        public void eliminarUsuario(int id)
         {
-            _accesoDatosSQL.eliminarUsuario(usuario);
+            _accesoDatosSQL.eliminarUsuario(id);
         }
         #endregion
 
