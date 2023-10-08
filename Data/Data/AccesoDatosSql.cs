@@ -91,12 +91,12 @@ namespace Data.Data
             try
             { 
                 dbContext.TraEdificio.FromSqlRaw(@"exec EDFS.PA_CrearEdificio @TC_Propietario,@TC_Nombre", parameters).ToList().FirstOrDefault();
-                return true;
+                return false;
             }
             catch (Exception ex) { 
             
             };
-            return false;
+            return true;
         }
 
         public TraEdificio buscarEdificio(string nombre)
@@ -121,13 +121,13 @@ namespace Data.Data
             try 
             {
                 dbContext.TraEdificio.FromSqlRaw(@"exec EDFS.PA_ActualizarEdificio @TN_IdEdificio, @TC_Propietario, @TC_Nombre, @TB_Activo", parameters).ToList().FirstOrDefault();
-                return true;
+                return false;
             }
             catch (Exception ex) { 
             
             };
 
-            return false;
+            return true;
         }
 
         public async Task<TraEdificio> eliminarEdificio(int id)
@@ -185,9 +185,13 @@ namespace Data.Data
         #endregion
 
         #region CRUDOFICINA
-        public async Task<List<TraOficina>> listarOficina()
+        public async Task<List<TraOficina>> listarOficina(int id)
         {
-            var oficina = dbContext.TraOficina.FromSqlRaw(@"exec EDFS.PA_BuscarOficina").ToList();
+            var parameters = new[]
+                {
+                new SqlParameter("@TN_IdEdificio", id)
+            };
+            var oficina = dbContext.TraOficina.FromSqlRaw(@"exec EDFS.PA_ListarOficinasPorEdificio @TN_IdEdificio", parameters).ToList();
             return oficina;
         }
 
