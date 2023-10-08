@@ -51,9 +51,9 @@ namespace Negocio
         {
             return _accesoDatosSQL.buscarEdificio(nombre);
         }
-        public void modificarEdificio(TraEdificio edificio)
+        public bool modificarEdificio(TraEdificio edificio)
         {
-            _accesoDatosSQL.modificarEdificio(edificio);
+            return _accesoDatosSQL.modificarEdificio(edificio);
         }
         public void eliminarEdificio(int id)
         {
