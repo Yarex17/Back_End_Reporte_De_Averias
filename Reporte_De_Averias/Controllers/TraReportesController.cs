@@ -19,8 +19,8 @@ namespace Reporte_De_Averias.Controllers
 
         // GET: api/TraReportes
         [HttpGet]
-        [Route(nameof(ListarTraReportesPorTraEdificio))]
-        public Task<List<TraReporte>> ListarTraReportesPorTraEdificio(int id)
+        [Route(nameof(ListarTraReportes))]
+        public Task<List<TraReporte>> ListarTraReportes()
         {
             return _negocioSql.listarReporte();
         }
@@ -48,26 +48,32 @@ namespace Reporte_De_Averias.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut]
         [Route(nameof(CrearTraReporte))]
-        public bool CrearTraReporte(int id, String descripcion, bool activo, bool eliminado)
+        public bool CrearTraReporte(string descripcion)
         {
 
-            return _negocioSql.registarReporte(id, descripcion, activo, eliminado);
+            return _negocioSql.registarReporte(descripcion);
+        }
+
+        [HttpPost]
+        [Route(nameof(AgregarDatosReporte))]
+        public bool AgregarDatosReporte(int idReporte, int tipoAveria, int prioridad, int estado, int oficina)
+        {
+            _negocioSql.agregarDatosReporte(idReporte, tipoAveria, prioridad, estado, oficina);
+            return true;
         }
 
         // POST: api/TraReportes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Route(nameof(ModificarReporte))]
-        public bool ModificarReporte(int id,String descripcion, bool activo, bool eliminado)
+        public bool ModificarReporte(int idReporte, string descripcion, int tipoAveria, int prioridad, int estado, int oficina, bool activo)
         {
-
             TraReporte traReporte = new TraReporte();
-            traReporte.TnIdReporte = id;
+            traReporte.TnIdReporte = idReporte;
             traReporte.TcDescripcion = descripcion;
             traReporte.TbActivo = activo;
-            traReporte.TbEliminado = eliminado;
-            _negocioSql.modificarReporte(traReporte);
-            return true;
+            
+            return _negocioSql.modificarReporte(traReporte, tipoAveria, prioridad, estado, oficina);
         }
 
         // DELETE: api/TraReportes/5

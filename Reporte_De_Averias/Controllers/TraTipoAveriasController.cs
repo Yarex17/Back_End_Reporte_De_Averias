@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Entities.Context;
+using Negocio;
 
 namespace Reporte_De_Averias.Controllers
 {
@@ -13,27 +14,21 @@ namespace Reporte_De_Averias.Controllers
     [ApiController]
     public class TraTipoAveriasController : ControllerBase
     {
-        private readonly DBContext _context;
-
-        public TraTipoAveriasController(DBContext context)
-        {
-            _context = context;
-        }
+        private readonly DBContext _context = new DBContext();
+        private readonly NegocioSQL _negocioSql = new NegocioSQL();
 
         // GET: api/TraTipoAverias
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TraTipoAveria>>> GetTraTipoAveria()
+        [Route(nameof(ListarTraTipoAveria))]
+        public Task<List<TraTipoAveria>> ListarTraTipoAveria()
         {
-          if (_context.TraTipoAveria == null)
-          {
-              return NotFound();
-          }
-            return await _context.TraTipoAveria.ToListAsync();
+            return _negocioSql.listarTipoAveria();
         }
 
         // GET: api/TraTipoAverias/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<TraTipoAveria>> GetTraTipoAveria(int id)
+        [HttpGet]
+        [Route(nameof(BuscarTraTipoAveria))]
+        public async Task<ActionResult<TraTipoAveria>> BuscarTraTipoAveria(int id)
         {
           if (_context.TraTipoAveria == null)
           {
@@ -51,67 +46,33 @@ namespace Reporte_De_Averias.Controllers
 
         // PUT: api/TraTipoAverias/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTraTipoAveria(int id, TraTipoAveria traTipoAveria)
+        [HttpPut]
+        [Route(nameof(CrearTraTipoAveria))]
+        public bool CrearTraTipoAveria(string descripcion)
         {
-            if (id != traTipoAveria.TnIdTipoAveria)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(traTipoAveria).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TraTipoAveriaExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return _negocioSql.registarTipoAveria(descripcion);
         }
 
         // POST: api/TraTipoAverias
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TraTipoAveria>> PostTraTipoAveria(TraTipoAveria traTipoAveria)
+        [Route(nameof(ModificarTraTipoAveria))]
+        public bool ModificarTraTipoAveria(int idTipoAveria, string descripcion, bool activo)
         {
-          if (_context.TraTipoAveria == null)
-          {
-              return Problem("Entity set 'DBContext.TraTipoAveria'  is null.");
-          }
-            _context.TraTipoAveria.Add(traTipoAveria);
-            await _context.SaveChangesAsync();
+            TraTipoAveria traTipoAveria = new TraTipoAveria();
+            traTipoAveria.TnIdTipoAveria = idTipoAveria;
+            traTipoAveria.TcDescripcion = descripcion;
+            traTipoAveria.TbActivo = activo;
 
-            return CreatedAtAction("GetTraTipoAveria", new { id = traTipoAveria.TnIdTipoAveria }, traTipoAveria);
+            return _negocioSql.modificarTipoAveria(traTipoAveria);
         }
 
         // DELETE: api/TraTipoAverias/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTraTipoAveria(int id)
+        [HttpPost]
+        [Route(nameof(ElminarTraTipoAveria))]
+        public async Task<IActionResult> ElminarTraTipoAveria(int id)
         {
-            if (_context.TraTipoAveria == null)
-            {
-                return NotFound();
-            }
-            var traTipoAveria = await _context.TraTipoAveria.FindAsync(id);
-            if (traTipoAveria == null)
-            {
-                return NotFound();
-            }
-
-            _context.TraTipoAveria.Remove(traTipoAveria);
-            await _context.SaveChangesAsync();
-
+            _negocioSql.eliminarTipoAveria(id);
             return NoContent();
         }
 

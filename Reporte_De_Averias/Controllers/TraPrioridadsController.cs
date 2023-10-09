@@ -19,8 +19,8 @@ namespace Reporte_De_Averias.Controllers
 
         // GET: api/TraPrioridads
         [HttpGet]
-        [Route(nameof(ListarTraPrioridadsPorTraEdificio))]
-        public Task<List<TraPrioridad>> ListarTraPrioridadsPorTraEdificio(int id)
+        [Route(nameof(ListarTraPrioridades))]
+        public Task<List<TraPrioridad>> ListarTraPrioridades()
         {
             return _negocioSql.listarPrioridad();
         }
@@ -48,10 +48,10 @@ namespace Reporte_De_Averias.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut]
         [Route(nameof(CrearTraPrioridad))]
-        public bool CrearTraPrioridad(String nombre, bool activa, int eliminada)
+        public bool CrearTraPrioridad(String nombre)
         {
 
-            return _negocioSql.registarPrioridad(nombre,activa,eliminada);
+            return _negocioSql.registarPrioridad(nombre);
         }
 
         // POST: api/TraPrioridads
