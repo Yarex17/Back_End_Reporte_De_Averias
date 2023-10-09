@@ -168,7 +168,7 @@ namespace Data.Data
         #region CRUDESTADO
         public async Task<List<TraEstado>> listarEstado()
         {
-            var estado = dbContext.TraEstado.FromSqlRaw(@"exec AVRS.PA_BuscarEstado").ToList();
+            var estado = dbContext.TraEstado.FromSqlRaw(@"exec AVRS.PA_ListarEstados").ToList();
             return estado;
         }
 
@@ -212,7 +212,7 @@ namespace Data.Data
 
             try
             {
-                dbContext.TraEdificio.FromSqlRaw(@"exec EDFS.PA_ActualizarEdificio @TN_IdEdificio, @TC_Propietario, @TC_Nombre, @TB_Activo", parameters).ToList().FirstOrDefault();
+                dbContext.TraEstado.FromSqlRaw(@"exec AVRS.PA_ActualizarEstado @TN_IdEstado, @TC_Propietario, @TB_Activo", parameters).ToList().FirstOrDefault();
                 return false;
             }
             catch (Exception ex)
@@ -309,23 +309,21 @@ namespace Data.Data
 
         public async Task<List<TraPrioridad>> listarPrioridad()
         {
-            var prioridad = dbContext.TraPrioridad.FromSqlRaw(@"exec EDFS.PA_BuscarPrioridad").ToList();
+            var prioridad = dbContext.TraPrioridad.FromSqlRaw(@"exec AVRS.PA_ListarPrioridades").ToList();
             return prioridad;
         }
 
-        public bool registarPrioridad(String nombre, bool activa, int eliminada)
+        public bool registarPrioridad(String nombre)
         {
             var parameters = new[]
         {
-                new SqlParameter("@TC_Nombre", nombre),
-                new SqlParameter("@TB_Activa", activa),
-                new SqlParameter("@TB_Eliminada", eliminada)
+                new SqlParameter("@TC_Nombre", nombre)
             };
 
 
             try
             {
-                dbContext.TraPrioridad.FromSqlRaw(@"exec EDFS.PA_CrearPrioridad @TC_Propietario,@TC_Nombre, @TB_Activa, @TB_Eliminada", parameters).ToList().FirstOrDefault();
+                dbContext.TraPrioridad.FromSqlRaw(@"exec AVRS.PA_CrearPrioridad @TC_Nombre", parameters).ToList().FirstOrDefault();
                 return false;
             }
             catch (Exception ex)
@@ -339,7 +337,7 @@ namespace Data.Data
         {
             var parameter = new List<SqlParameter>();
             parameter.Add(new SqlParameter("@TC_Nombre", nombre));
-            TraPrioridad prioridad = dbContext.TraPrioridad.FromSqlRaw(@"exec EDFS.PA_BuscarPrioridad @TC_Nombre", parameter.ToArray()).ToList().FirstOrDefault();
+            TraPrioridad prioridad = dbContext.TraPrioridad.FromSqlRaw(@"exec AVRS.PA_BuscarPrioridad @TC_Nombre", parameter.ToArray()).ToList().FirstOrDefault();
             return prioridad;
         }
 
@@ -349,12 +347,14 @@ namespace Data.Data
             int activo = prioridad.TbActiva ? 1 : 0;
             var parameters = new[]
             {
-                new SqlParameter("@TC_Nombre", prioridad.TcNombre)
+                new SqlParameter("@TN_IdPrioridad", prioridad.TnIdPrioridad),
+                new SqlParameter("@TC_Nombre", prioridad.TcNombre),
+                new SqlParameter("@TB_Activa", prioridad.TbActiva)
             };
 
             try
             {
-                dbContext.TraPrioridad.FromSqlRaw(@"exec EDFS.PA_ActualizarPrioridad @TC_Propietario, @TC_Nombre, @TC_Activo", parameters.ToArray()).ToList().FirstOrDefault();
+                dbContext.TraPrioridad.FromSqlRaw(@"exec AVRS.PA_ActualizarPrioridad @TN_IdPrioridad, @TC_Nombre, @TB_Activa", parameters.ToArray()).ToList().FirstOrDefault();
                 return false;
             }
             catch (Exception ex)
@@ -370,7 +370,7 @@ namespace Data.Data
         {
             var parameter = new List<SqlParameter>();
             parameter.Add(new SqlParameter("@TN_IdPrioridad", id));
-            TraPrioridad prioridad1 = dbContext.TraPrioridad.FromSqlRaw(@"exec AVRS.PA_EliminarEstado @TN_IdPrioridad", parameter.ToArray()).ToList().FirstOrDefault();
+            TraPrioridad prioridad1 = dbContext.TraPrioridad.FromSqlRaw(@"exec AVRS.PA_EliminarPrioridad @TN_IdPrioridad", parameter.ToArray()).ToList().FirstOrDefault();
             return prioridad1;
         }
 
@@ -409,23 +409,20 @@ namespace Data.Data
         #region CRUDREPORTE
         public async Task<List<TraReporte>> listarReporte()
         {
-            var Reporte = dbContext.TraReporte.FromSqlRaw(@"exec EDFS.PA_BuscarReporte").ToList();
+            var Reporte = dbContext.TraReporte.FromSqlRaw(@"exec AVRS.PA_ListarReportes").ToList();
             return Reporte;
         }
 
-        public bool registarReporte(int id, String descripcion, bool activo, bool eliminado)
+        public bool registarReporte(string descripcion)
         {
             var parameters = new[]
            {
-                new SqlParameter("@TN_Id_Reporte", id),
-                new SqlParameter("@TC_Descripcion", descripcion),
-                new SqlParameter("@TB_Activado", activo),
-                new SqlParameter("@TB_Eliminado", eliminado),
+                new SqlParameter("@TC_Descripcion", descripcion)
             };
 
             try
             {
-                dbContext.TraReporte.FromSqlRaw(@"exec EDFS.PA_CrearReporte @TN_Id_Reporte,@TB_Activado,@TB_Eliminado", parameters).ToList().FirstOrDefault();
+                dbContext.TraReporte.FromSqlRaw(@"exec AVRS.PA_CrearReporte @TC_Descripcion", parameters).ToList().FirstOrDefault();
                 return false;
             }
             catch (Exception ex)
@@ -444,15 +441,46 @@ namespace Data.Data
             return Reporte;
         }
 
-        public bool modificarReporte(TraReporte Reporte)
+        public bool agregarDatosReporte(int idReporte, int tipoAveria, int prioridad, int estado, int oficina)
         {
-            var parameter = new List<SqlParameter>();
-            parameter.Add(new SqlParameter("@TN_IdReporte", Reporte.TnIdReporte));
-            parameter.Add(new SqlParameter("@TB_Activo", Reporte.TbActivo));
+            var parameters = new[]
+            {
+               new SqlParameter("@TN_IdReporte", idReporte),
+               new SqlParameter("@TN_TipoAveria", tipoAveria),
+               new SqlParameter("@TN_Prioridad", prioridad),
+               new SqlParameter("@TN_Estado", estado),
+               new SqlParameter("@TN_IdOficina", oficina)
+            };
 
             try
             {
-                dbContext.TraReporte.FromSqlRaw(@"exec EDFS.PA_CrearReporte @TN_Id_Reporte,@TB_Activado,@TB_Eliminado", parameter).ToList().FirstOrDefault();
+                dbContext.TraReporte.FromSqlRaw(@"exec AVRS.PA_AgregarDatosReporte @TN_IdReporte, @TN_TipoAveria, @TN_Prioridad, @TN_Estado, @TN_IdOficina", parameters).ToList().FirstOrDefault();
+                return false;
+            }
+            catch (Exception ex)
+            {
+
+            };
+            return true;
+
+        }
+
+        public bool modificarReporte(TraReporte traReporte, int tipoAveria, int prioridad, int estado, int oficina)
+        {
+            var parameters = new[]
+             {
+               new SqlParameter("@TN_IdReporte", traReporte.TnIdReporte),
+               new SqlParameter("@TC_Descripcion", traReporte.TcDescripcion),
+               new SqlParameter("@TB_Activo", traReporte.TbActivo),
+               new SqlParameter("@TN_TipoAveria", tipoAveria),
+               new SqlParameter("@TN_Prioridad", prioridad),
+               new SqlParameter("@TN_Estado", estado),
+               new SqlParameter("@TN_IdOficina", oficina)
+            };
+
+            try
+            {
+                dbContext.TraReporte.FromSqlRaw(@"exec AVRS.PA_ActualizarReporte @TN_IdReporte, @TC_Descripcion, @TB_Activo, @TN_TipoAveria, @TN_Prioridad, @TN_Estado, @TN_IdOficina", parameters).ToList().FirstOrDefault();
                 return false;
             }
             catch (Exception ex)
@@ -477,20 +505,20 @@ namespace Data.Data
 
         public async Task<List<TraTipoAveria>> listarTipoAveria()
         {
-            var tipoAveria = dbContext.TraTipoAveria.FromSqlRaw(@"exec AVRS.PA_BuscarTipoAveria").ToList();
+            var tipoAveria = dbContext.TraTipoAveria.FromSqlRaw(@"exec AVRS.PA_ListarTiposAveria").ToList();
             return tipoAveria;
         }
 
-        public bool registarTipoAveria(TraTipoAveria tipoAveria)
+        public bool registarTipoAveria(string descripcion)
         {
             var parameters = new[]
             {
-                new SqlParameter("@TC_Descripcion", tipoAveria.TcDescripcion),
+                new SqlParameter("@TC_Descripcion", descripcion),
             };
 
             try
             {
-                dbContext.TraTipoAveria.FromSqlRaw(@"exec AVRS.PA_CrearTipoAveria @TC_Nombre", parameters).ToList().FirstOrDefault();
+                dbContext.TraTipoAveria.FromSqlRaw(@"exec AVRS.PA_CrearTipoAveria @TC_Descripcion", parameters).ToList().FirstOrDefault();
                 return false;
             }
             catch (Exception ex)
@@ -511,14 +539,16 @@ namespace Data.Data
 
         public bool modificarTipoAveria(TraTipoAveria tipoAveria)
         {
-            var parameter = new List<SqlParameter>();
-            parameter.Add(new SqlParameter("@TN_IdTipoAveria", tipoAveria.TnIdTipoAveria));
-            parameter.Add(new SqlParameter("@TC_Descripcion", tipoAveria.TcDescripcion));
-            parameter.Add(new SqlParameter("@TB_Activo", tipoAveria.TbActivo));
+            var parameters = new[]
+             {
+                 new SqlParameter("@TN_IdTipoAveria", tipoAveria.TnIdTipoAveria),
+                 new SqlParameter("@TC_Descripcion", tipoAveria.TcDescripcion),
+                 new SqlParameter("@TB_Activo", tipoAveria.TbActivo)
+            };
 
             try
             {
-                dbContext.TraTipoAveria.FromSqlRaw(@"exec AVRS.PA_ActualizarTipoAveria @TN_IdTipoAveria, @TC_Descripcion, @TB_Activo", parameter.ToArray()).ToList().FirstOrDefault();
+                dbContext.TraTipoAveria.FromSqlRaw(@"exec AVRS.PA_ActualizarTipoAveria @TN_IdTipoAveria, @TC_Descripcion, @TB_Activo", parameters).ToList().FirstOrDefault();
                 return false;
             }
             catch (Exception ex)
@@ -530,10 +560,10 @@ namespace Data.Data
 
         }
 
-        public async Task<TraTipoAveria> eliminarTipoAveria(TraTipoAveria TipoAveria)
+        public async Task<TraTipoAveria> eliminarTipoAveria(int id)
         {
             var parameter = new List<SqlParameter>();
-            parameter.Add(new SqlParameter("@TN_IdTipoAveria", TipoAveria.TnIdTipoAveria));
+            parameter.Add(new SqlParameter("@TN_IdTipoAveria", id));
             TraTipoAveria TipoAveria1 = dbContext.TraTipoAveria.FromSqlRaw(@"exec AVRS.PA_EliminarTipoAveria @TN_IdTipoAveria", parameter.ToArray()).ToList().FirstOrDefault();
             return TipoAveria1;
         }

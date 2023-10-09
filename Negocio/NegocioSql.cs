@@ -117,9 +117,9 @@ namespace Negocio
         {
             return _accesoDatosSQL.listarPrioridad();
         }
-        public bool registarPrioridad(String nombre, bool activa, int eliminada)
+        public bool registarPrioridad(String nombre)
         {
-            return _accesoDatosSQL.registarPrioridad(nombre,activa,eliminada);
+            return _accesoDatosSQL.registarPrioridad(nombre);
         }
         public TraPrioridad buscarPrioridad(string nombre)
         {
@@ -141,17 +141,21 @@ namespace Negocio
         {
             return _accesoDatosSQL.listarReporte();
         }
-        public bool registarReporte(int id, String descripcion, bool activo, bool eliminado)
+        public bool registarReporte(string descripcion)
         {
-            return _accesoDatosSQL.registarReporte(id, descripcion, activo, eliminado);
+            return _accesoDatosSQL.registarReporte(descripcion);
         }
         public TraReporte buscarReporte(int id)
         {
             return _accesoDatosSQL.buscarReporte(id);
         }
-        public bool modificarReporte(TraReporte reporte)
+        public bool agregarDatosReporte(int idReporte, int tipoAveria, int prioridad, int estado, int oficina)
         {
-            return _accesoDatosSQL.modificarReporte(reporte);
+            return _accesoDatosSQL.agregarDatosReporte(idReporte, tipoAveria, prioridad, estado, oficina);
+        }
+        public bool modificarReporte(TraReporte reporte, int tipoAveria, int prioridad, int estado, int oficina)
+        {
+            return _accesoDatosSQL.modificarReporte(reporte, tipoAveria, prioridad, estado, oficina);
         }
         public void eliminarReporte(int id)
         {
@@ -165,9 +169,9 @@ namespace Negocio
         {
             return _accesoDatosSQL.listarTipoAveria();
         }
-        public bool registarTipoAveria(TraTipoAveria tipoAveria)
+        public bool registarTipoAveria(string descripcion)
         {
-            return _accesoDatosSQL.registarTipoAveria(tipoAveria);
+            return _accesoDatosSQL.registarTipoAveria(descripcion);
         }
         public TraTipoAveria buscarTipoAveria(string nombre)
         {
@@ -177,9 +181,9 @@ namespace Negocio
         {
            return _accesoDatosSQL.modificarTipoAveria(tipoAveria);
         }
-        public void eliminarTipoAveria(TraTipoAveria tipoAveria)
+        public void eliminarTipoAveria(int id)
         {
-            _accesoDatosSQL.eliminarTipoAveria(tipoAveria);
+            _accesoDatosSQL.eliminarTipoAveria(id);
         }
         #endregion
     }

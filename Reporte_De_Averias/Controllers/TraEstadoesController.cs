@@ -21,8 +21,8 @@ namespace Reporte_De_Averias.Controllers
         // GET: api/TraEstadoes
         // GET: api/TraEstados
         [HttpGet]
-        [Route(nameof(ListarTraEstadosPorTraEdificio))]
-        public Task<List<TraEstado>> ListarTraEstadosPorTraEdificio()
+        [Route(nameof(ListarTraEstados))]
+        public Task<List<TraEstado>> ListarTraEstados()
         {
             return _negocioSql.listarEstado();
         }
