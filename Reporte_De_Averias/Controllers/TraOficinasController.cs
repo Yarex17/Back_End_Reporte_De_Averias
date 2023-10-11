@@ -20,9 +20,10 @@ namespace Reporte_De_Averias.Controllers
         // GET: api/TraOficinas
         [HttpGet]
         [Route(nameof(ListarTraOficinasPorTraEdificio))]
-        public Task<List<TraOficina>> ListarTraOficinasPorTraEdificio(int id)
+        public Task<List<TraOficina>> ListarTraOficinasPorTraEdificio()
         {
-            return _negocioSql.listarOficina(id);
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            return _negocioSql.listarOficina();
         }
 
         // GET: api/TraOficinas/5

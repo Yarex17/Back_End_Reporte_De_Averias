@@ -22,6 +22,7 @@ namespace Reporte_De_Averias.Controllers
         [Route(nameof(ListarTraPrioridades))]
         public Task<List<TraPrioridad>> ListarTraPrioridades()
         {
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
             return _negocioSql.listarPrioridad();
         }
 

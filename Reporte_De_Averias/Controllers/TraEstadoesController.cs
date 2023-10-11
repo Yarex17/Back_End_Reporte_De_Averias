@@ -24,6 +24,7 @@ namespace Reporte_De_Averias.Controllers
         [Route(nameof(ListarTraEstados))]
         public Task<List<TraEstado>> ListarTraEstados()
         {
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
             return _negocioSql.listarEstado();
         }
 
