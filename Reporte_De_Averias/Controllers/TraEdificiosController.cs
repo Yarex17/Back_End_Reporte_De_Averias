@@ -23,6 +23,7 @@ namespace Reporte_De_Averias.Controllers
         [Route(nameof(ListarTraEdificio))]
         public Task<List<TraEdificio>> ListarTraEdificio()
         {
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
             return _negocioSql.listarEdificio();
         }
 

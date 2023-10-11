@@ -235,13 +235,10 @@ namespace Data.Data
         #endregion
 
         #region CRUDOFICINA
-        public async Task<List<TraOficina>> listarOficina(int id)
+        public async Task<List<TraOficina>> listarOficina()
         {
-            var parameters = new[]
-                {
-                new SqlParameter("@TN_IdEdificio", id)
-            };
-            var oficina = dbContext.TraOficina.FromSqlRaw(@"exec EDFS.PA_ListarOficinasPorEdificio @TN_IdEdificio", parameters).ToList();
+            
+            var oficina = dbContext.TraOficina.FromSqlRaw(@"exec EDFS.PA_ListarOficinas").ToList();
             return oficina;
         }
 

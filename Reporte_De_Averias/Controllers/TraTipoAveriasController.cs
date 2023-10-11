@@ -22,6 +22,7 @@ namespace Reporte_De_Averias.Controllers
         [Route(nameof(ListarTraTipoAveria))]
         public Task<List<TraTipoAveria>> ListarTraTipoAveria()
         {
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
             return _negocioSql.listarTipoAveria();
         }
 
