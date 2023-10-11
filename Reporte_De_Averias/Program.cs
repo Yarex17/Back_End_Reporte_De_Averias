@@ -16,19 +16,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAngularOrigins",
-    builder =>
-    {
-        builder.WithOrigins(
-                            "http://localhost:4200"
-                            )
-                            .AllowAnyHeader()
-                            .AllowAnyMethod();
-    });
-});
-
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
