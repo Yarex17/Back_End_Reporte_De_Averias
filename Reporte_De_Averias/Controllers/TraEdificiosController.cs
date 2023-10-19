@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Entities.Context;
 using Data.Data;
 using Negocio;
+using Microsoft.AspNetCore.Cors;
+using Entities;
 
 namespace Reporte_De_Averias.Controllers
 {
@@ -23,6 +25,7 @@ namespace Reporte_De_Averias.Controllers
         [Route(nameof(ListarTraEdificio))]
         public Task<List<TraEdificio>> ListarTraEdificio()
         {
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
             return _negocioSql.listarEdificio();
         }
 
@@ -46,15 +49,11 @@ namespace Reporte_De_Averias.Controllers
 
         // PUT: api/TraEdificios/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut]
-
+        [HttpPost]
         [Route(nameof(RegistrarTraEdificio))]
-        public bool RegistrarTraEdificio(string propietario, string nombre)
+        public bool RegistrarTraEdificio(TraEdificio edificio)
         {
-            TraEdificio traEdificio = new TraEdificio();
-            traEdificio.TcPropietario = propietario;
-            traEdificio.TcNombre = nombre;
-            return _negocioSql.registarEdificio(traEdificio);
+            return _negocioSql.registarEdificio(edificio);
         }
 
         // POST: api/TraEdificios
