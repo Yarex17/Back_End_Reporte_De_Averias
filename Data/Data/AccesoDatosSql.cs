@@ -410,11 +410,11 @@ namespace Data.Data
             return Reporte;
         }
 
-        public bool registarReporte(string descripcion)
+        public bool registarReporte(TraReporte traReporte)
         {
             var parameters = new[]
            {
-                new SqlParameter("@TC_Descripcion", descripcion)
+                new SqlParameter("@TC_Descripcion", traReporte.TcDescripcion)
             };
 
             try
