@@ -47,12 +47,11 @@ namespace Reporte_De_Averias.Controllers
 
         // PUT: api/TraReportes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut]
+        [HttpPost]
         [Route(nameof(CrearTraReporte))]
-        public bool CrearTraReporte(string descripcion)
+        public bool CrearTraReporte(TraReporte traReporte)
         {
-
-            return _negocioSql.registarReporte(descripcion);
+            return _negocioSql.registarReporte(traReporte);
         }
 
         [HttpPost]
