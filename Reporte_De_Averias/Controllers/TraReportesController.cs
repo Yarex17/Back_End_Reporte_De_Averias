@@ -49,9 +49,9 @@ namespace Reporte_De_Averias.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Route(nameof(CrearTraReporte))]
-        public bool CrearTraReporte(TraReporte traReporte)
+        public bool CrearTraReporte(string descripcion, int idUsuario)
         {
-            return _negocioSql.registarReporte(traReporte);
+            return _negocioSql.registarReporte(descripcion, idUsuario);
         }
 
         [HttpPost]
