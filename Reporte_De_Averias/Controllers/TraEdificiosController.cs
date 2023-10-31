@@ -30,8 +30,9 @@ namespace Reporte_De_Averias.Controllers
         }
 
         // GET: api/TraEdificios/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<TraEdificio>> GetTraEdificio(int id)
+        [HttpGet]
+        [Route(nameof(BuscarTraEdificio))]
+        public async Task<ActionResult<TraEdificio>> BuscarTraEdificio(int id)
         {
             if (_context.TraEdificio == null)
             {
@@ -45,6 +46,13 @@ namespace Reporte_De_Averias.Controllers
             }
 
             return traEdificio;
+        }
+
+        [HttpPost]
+        [Route(nameof(BuscarTraEdificioPorUsuario))]
+        public async Task<TraEdificio> BuscarTraEdificioPorUsuario(int idUsuario)
+        {
+            return _negocioSql.buscarEdificioPorUsario(idUsuario);
         }
 
         // PUT: api/TraEdificios/5

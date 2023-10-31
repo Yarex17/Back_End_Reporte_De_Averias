@@ -47,10 +47,16 @@ namespace Negocio
         {
             return _accesoDatosSQL.registarEdificio(edificio);
         }
-        public TraEdificio buscarEdificio(string nombre)
+        public TraEdificio buscarEdificio(int id)
         {
-            return _accesoDatosSQL.buscarEdificio(nombre);
+            return _accesoDatosSQL.buscarEdificio(id);
         }
+
+        public TraEdificio buscarEdificioPorUsario(int idUsuario)
+        {
+            return _accesoDatosSQL.buscarEdificioPorUsuario(idUsuario);
+        }
+
         public bool modificarEdificio(TraEdificio edificio)
         {
             return _accesoDatosSQL.modificarEdificio(edificio);
