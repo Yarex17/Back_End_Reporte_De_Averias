@@ -25,7 +25,7 @@ namespace RAData.Context
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             
-            options.UseSqlServer($"Data Source=YAREX;Initial Catalog=ReporteAverias;Persist Security Info=True;User ID=sa;Password=12345678;Pooling=False; TrustServerCertificate=True");
+            options.UseSqlServer($"Data Source=DESKTOP-HAJJ5O1;Initial Catalog=ReporteAverias;Persist Security Info=True;User ID=sa;Password=12345;Pooling=False; TrustServerCertificate=True");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
