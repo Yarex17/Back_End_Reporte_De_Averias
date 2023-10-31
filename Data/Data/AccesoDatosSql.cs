@@ -410,16 +410,17 @@ namespace Data.Data
             return Reporte;
         }
 
-        public bool registarReporte(TraReporte traReporte)
+        public bool registarReporte(string descripcion, int idUsuario)
         {
             var parameters = new[]
            {
-                new SqlParameter("@TC_Descripcion", traReporte.TcDescripcion)
+                new SqlParameter("@TC_Descripcion", descripcion),
+                new SqlParameter("@TN_IdUsuario", idUsuario)
             };
 
             try
             {
-                dbContext.TraReporte.FromSqlRaw(@"exec AVRS.PA_CrearReporte @TC_Descripcion", parameters).ToList().FirstOrDefault();
+                dbContext.TraReporte.FromSqlRaw(@"exec AVRS.PA_CrearReporte @TC_Descripcion, @TN_IdUsuario", parameters).ToList().FirstOrDefault();
                 return false;
             }
             catch (Exception ex)

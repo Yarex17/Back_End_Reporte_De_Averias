@@ -141,9 +141,9 @@ namespace Negocio
         {
             return _accesoDatosSQL.listarReporte();
         }
-        public bool registarReporte(TraReporte traReporte)
+        public bool registarReporte(string descripcion, int idUsuario)
         {
-            return _accesoDatosSQL.registarReporte(traReporte);
+            return _accesoDatosSQL.registarReporte(descripcion, idUsuario);
         }
         public TraReporte buscarReporte(int id)
         {
