@@ -124,11 +124,21 @@ namespace Data.Data
             return true;
         }
 
-        public TraEdificio buscarEdificio(string nombre)
+        public TraEdificio buscarEdificio(int id)
         {
             var parameter = new List<SqlParameter>();
-            parameter.Add(new SqlParameter("@TC_Nombre", nombre));
-            TraEdificio edificio = dbContext.TraEdificio.FromSqlRaw(@"exec EDFS.PA_BuscarEdificio @TC_Nombre", parameter.ToArray()).ToList().FirstOrDefault();
+            parameter.Add(new SqlParameter("@TN_IdEdificio", id));
+            TraEdificio edificio = dbContext.TraEdificio.FromSqlRaw(@"exec EDFS.PA_BuscarEdificio @TN_IdEdificio", parameter.ToArray()).ToList().FirstOrDefault();
+            return edificio;
+        }
+
+        public TraEdificio buscarEdificioPorUsuario(int idUsuario) 
+        {
+            var parameters = new[]
+            {
+                 new SqlParameter("@TN_IdUsuario", idUsuario),
+            };
+            TraEdificio edificio = dbContext.TraEdificio.FromSqlRaw(@"exec EDFS.PA_BuscarEdificioPorUsuario @TN_IdUsuario", parameters).ToList().FirstOrDefault();
             return edificio;
         }
 
