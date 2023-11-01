@@ -31,7 +31,6 @@ namespace Reporte_De_Averias.Controllers
 
         // GET: api/TraUsuarios/5
         [HttpGet]
-
         [Route(nameof(BuscarTraUsario))]
         public async Task<ActionResult<TraUsuario>> BuscarTraUsario(int id)
         {
@@ -47,6 +46,13 @@ namespace Reporte_De_Averias.Controllers
             }
 
             return traUsuario;
+        }
+
+        [HttpPost]
+        [Route(nameof(BuscarTraUsarioPorEdificioYRol))]
+        public async Task<TraUsuario> BuscarTraUsarioPorEdificioYRol(int idEdificio, string rol)
+        {
+            return _negocioSql.buscarTraUsuarioPorEdificioYRol(idEdificio, rol);
         }
 
         // PUT: api/TraUsuarios/5

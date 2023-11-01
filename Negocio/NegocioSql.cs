@@ -27,7 +27,12 @@ namespace Negocio
         {
             return _accesoDatosSQL.buscarUsuario(nombre);
         }
-        public bool modificarUsuario(TraUsuario usuario, int idOficinaNueva)
+
+        public TraUsuario buscarTraUsuarioPorEdificioYRol(int idEdificio, string rol)
+        {
+            return _accesoDatosSQL.buscarTraUsuarioPorEdificioYRol(idEdificio, rol);
+        }
+            public bool modificarUsuario(TraUsuario usuario, int idOficinaNueva)
         {
             return _accesoDatosSQL.modificarUsuario(usuario, idOficinaNueva);
         }
