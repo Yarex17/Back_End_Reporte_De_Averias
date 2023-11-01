@@ -441,17 +441,18 @@ namespace Data.Data
             return Reporte;
         }
 
-        public bool registarReporte(string descripcion, int idUsuario)
+        public bool registarReporte(string descripcion, int idUsuario, int idAdminEdificio)
         {
             var parameters = new[]
            {
                 new SqlParameter("@TC_Descripcion", descripcion),
-                new SqlParameter("@TN_IdUsuario", idUsuario)
+                new SqlParameter("@TN_IdUsuario", idUsuario),
+                new SqlParameter("@TN_IdAdminEdificio", idAdminEdificio)
             };
 
             try
             {
-                dbContext.TraReporte.FromSqlRaw(@"exec AVRS.PA_CrearReporte @TC_Descripcion, @TN_IdUsuario", parameters).ToList().FirstOrDefault();
+                dbContext.TraReporte.FromSqlRaw(@"exec AVRS.PA_CrearReporte @TC_Descripcion, @TN_IdUsuario, @TN_IdAdminEdificio", parameters).ToList().FirstOrDefault();
                 return false;
             }
             catch (Exception ex)
