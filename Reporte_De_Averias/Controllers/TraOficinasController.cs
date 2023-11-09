@@ -27,7 +27,7 @@ namespace Reporte_De_Averias.Controllers
         }
 
         // GET: api/TraOficinas/5
-        [HttpGet]
+        [HttpPost]
         [Route(nameof(BuscarTraOficina))]
         public async Task<ActionResult<TraOficina>> BuscarTraOficina(int id)
         {
