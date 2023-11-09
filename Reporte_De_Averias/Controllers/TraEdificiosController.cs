@@ -30,7 +30,7 @@ namespace Reporte_De_Averias.Controllers
         }
 
         // GET: api/TraEdificios/5
-        [HttpGet]
+        [HttpPost]
         [Route(nameof(BuscarTraEdificio))]
         public async Task<ActionResult<TraEdificio>> BuscarTraEdificio(int id)
         {
