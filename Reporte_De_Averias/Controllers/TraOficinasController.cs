@@ -47,7 +47,7 @@ namespace Reporte_De_Averias.Controllers
 
         // PUT: api/TraOficinas/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut]
+        [HttpPost]
         [Route(nameof(CrearTraOficina))]
         public bool CrearTraOficina(int numeroPiso, int idEdificio)
         {
