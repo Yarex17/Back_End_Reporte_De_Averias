@@ -76,7 +76,17 @@ namespace Data.Data
             return usuario;
         }
 
-        public bool modificarUsuario(TraUsuario usuario, int idOficinaNueva)
+        public List<TraUsuario> buscarTecnicos()
+        {
+            var parameters = new[]
+            {
+                 new SqlParameter("@TN_Rol", "Tecnico")
+            };
+            var usuarios = dbContext.TraUsuario.FromSqlRaw(@"exec USRS.PA_BuscarUsuarioPorRol @TN_Rol", parameters).ToList();
+            return usuarios;
+        }
+
+            public bool modificarUsuario(TraUsuario usuario, int idOficinaNueva)
         {
             int activo = usuario.TbActivo ? 1 : 0;
             var parameters = new[]

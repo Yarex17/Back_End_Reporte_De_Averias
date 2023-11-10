@@ -38,6 +38,11 @@ namespace Negocio
             return _accesoDatosSQL.buscarJefeTecnico();
         }
 
+        public List<TraUsuario> buscarTecnicos() {
+            
+            return _accesoDatosSQL.buscarTecnicos();
+        }
+
         public bool modificarUsuario(TraUsuario usuario, int idOficinaNueva)
         {
             return _accesoDatosSQL.modificarUsuario(usuario, idOficinaNueva);
