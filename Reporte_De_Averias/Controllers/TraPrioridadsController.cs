@@ -27,7 +27,7 @@ namespace Reporte_De_Averias.Controllers
         }
 
         // GET: api/TraPrioridads/5
-        [HttpGet]
+        [HttpPost]
         [Route(nameof(BuscarTraPrioridad))]
         public async Task<ActionResult<TraPrioridad>> BuscarTraPrioridad(int id)
         {
@@ -47,7 +47,7 @@ namespace Reporte_De_Averias.Controllers
 
         // PUT: api/TraPrioridads/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut]
+        [HttpPost]
         [Route(nameof(CrearTraPrioridad))]
         public bool CrearTraPrioridad(String nombre)
         {

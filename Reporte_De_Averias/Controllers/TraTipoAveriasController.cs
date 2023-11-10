@@ -27,7 +27,7 @@ namespace Reporte_De_Averias.Controllers
         }
 
         // GET: api/TraTipoAverias/5
-        [HttpGet]
+        [HttpPost]
         [Route(nameof(BuscarTraTipoAveria))]
         public async Task<ActionResult<TraTipoAveria>> BuscarTraTipoAveria(int id)
         {
@@ -47,7 +47,7 @@ namespace Reporte_De_Averias.Controllers
 
         // PUT: api/TraTipoAverias/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut]
+        [HttpPost]
         [Route(nameof(CrearTraTipoAveria))]
         public bool CrearTraTipoAveria(string descripcion)
         {
