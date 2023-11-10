@@ -63,6 +63,13 @@ namespace Reporte_De_Averias.Controllers
         }
 
         [HttpPost]
+        [Route(nameof(EnviarTraReporte))]
+        public bool EnviarTraReporte(int idReporte, int idUsuario)
+        {
+            return _negocioSql.enviarTraReporte(idReporte, idUsuario);
+        }
+
+        [HttpPost]
         [Route(nameof(AgregarDatosReporte))]
         public bool AgregarDatosReporte(int idReporte, int tipoAveria, int prioridad, int estado, int oficina)
         {

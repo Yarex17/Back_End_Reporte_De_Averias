@@ -70,7 +70,13 @@ namespace Data.Data
             return usuario;
         }
 
-            public bool modificarUsuario(TraUsuario usuario, int idOficinaNueva)
+        public TraUsuario buscarJefeTecnico()
+        {
+            TraUsuario usuario = dbContext.TraUsuario.FromSqlRaw(@"exec USRS.PA_BuscarJefeTecnico").ToList().FirstOrDefault();
+            return usuario;
+        }
+
+        public bool modificarUsuario(TraUsuario usuario, int idOficinaNueva)
         {
             int activo = usuario.TbActivo ? 1 : 0;
             var parameters = new[]
@@ -444,7 +450,7 @@ namespace Data.Data
         public bool registarReporte(string descripcion, int idUsuario, int idAdminEdificio)
         {
             var parameters = new[]
-           {
+            {
                 new SqlParameter("@TC_Descripcion", descripcion),
                 new SqlParameter("@TN_IdUsuario", idUsuario),
                 new SqlParameter("@TN_IdAdminEdificio", idAdminEdificio)
@@ -463,7 +469,27 @@ namespace Data.Data
             
         }
 
-        public TraReporte buscarReporte(int id)
+        public bool enviarTraReporte(int idReporte, int idUsuario)
+        {
+            var parameters = new[]
+            {
+                new SqlParameter("@TN_IdReporte", idReporte),
+                new SqlParameter("@TN_IdUsuario", idUsuario)
+            };
+
+            try
+            {
+                dbContext.TraReporte.FromSqlRaw(@"exec AVRS.PA_EnviarReporte @TN_IdReporte, @TN_IdUsuario", parameters).ToList().FirstOrDefault();
+                return false;
+            }
+            catch (Exception ex)
+            {
+
+            };
+            return true;
+        }
+
+            public TraReporte buscarReporte(int id)
         {
             var parameter = new List<SqlParameter>();
             parameter.Add(new SqlParameter("@id", id));
