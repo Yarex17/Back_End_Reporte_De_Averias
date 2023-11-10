@@ -55,9 +55,16 @@ namespace Reporte_De_Averias.Controllers
             return _negocioSql.buscarTraUsuarioPorEdificioYRol(idEdificio, rol);
         }
 
+        [HttpGet]
+        [Route(nameof(BuscarJefeTecnico))]
+        public async Task<TraUsuario> BuscarJefeTecnico()
+        {
+            return _negocioSql.buscarJefeTecnico();
+        }
+
         // PUT: api/TraUsuarios/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut]
+        [HttpPost]
         [Route(nameof(CrearTraUsario))]
         public bool CrearTraUsario(string rol, string nombre, string apellido, string cedula, string correo, string contrasennia,int idOficina)
         {

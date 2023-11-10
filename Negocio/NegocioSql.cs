@@ -32,7 +32,13 @@ namespace Negocio
         {
             return _accesoDatosSQL.buscarTraUsuarioPorEdificioYRol(idEdificio, rol);
         }
-            public bool modificarUsuario(TraUsuario usuario, int idOficinaNueva)
+
+        public TraUsuario buscarJefeTecnico()
+        {
+            return _accesoDatosSQL.buscarJefeTecnico();
+        }
+
+        public bool modificarUsuario(TraUsuario usuario, int idOficinaNueva)
         {
             return _accesoDatosSQL.modificarUsuario(usuario, idOficinaNueva);
         }
@@ -160,6 +166,12 @@ namespace Negocio
         {
             return _accesoDatosSQL.registarReporte(descripcion, idUsuario, idAdminEdificio);
         }
+
+        public bool enviarTraReporte(int idReporte, int idUsuario)
+        {
+            return _accesoDatosSQL.enviarTraReporte(idReporte, idUsuario);
+        }
+
         public TraReporte buscarReporte(int id)
         {
             return _accesoDatosSQL.buscarReporte(id);
