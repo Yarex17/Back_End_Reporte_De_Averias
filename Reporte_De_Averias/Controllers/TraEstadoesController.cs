@@ -29,7 +29,7 @@ namespace Reporte_De_Averias.Controllers
         }
 
         // GET: api/TraEstados/5
-        [HttpGet]
+        [HttpPost]
         [Route(nameof(BuscarTraEstado))]
         public async Task<ActionResult<TraEstado>> BuscarTraEstado(int id)
         {
@@ -49,7 +49,7 @@ namespace Reporte_De_Averias.Controllers
 
         // PUT: api/TraEstados/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut]
+        [HttpPost]
         [Route(nameof(CrearTraEstado))]
         public bool CrearTraEstado(String nombre)
         {
