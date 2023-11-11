@@ -167,6 +167,10 @@ namespace Negocio
         {
             return _accesoDatosSQL.listarReportesPorUsuario(idUsuario);
         }
+        public Task<List<TraReporte>> listarTraReportesPorUsuarioYEstado(int idUsuario, string nombreEstado)
+        {
+            return _accesoDatosSQL.listarReportesPorUsuarioYEstado(idUsuario, nombreEstado);
+        }
         public bool registarReporte(string descripcion, int idUsuario, int idAdminEdificio)
         {
             return _accesoDatosSQL.registarReporte(descripcion, idUsuario, idAdminEdificio);

@@ -457,6 +457,17 @@ namespace Data.Data
             return Reporte;
         }
 
+        public async Task<List<TraReporte>> listarReportesPorUsuarioYEstado(int idUsuario, string nombreEstado)
+        {
+            var parameters = new[]
+            {
+                new SqlParameter("@TN_IdUsuario", idUsuario),
+                new SqlParameter("@TC_NombreEstado", nombreEstado)
+            };
+            var Reporte = dbContext.TraReporte.FromSqlRaw(@"exec AVRS.PA_ListarReportesPorUsusarioYEstado @TN_idUsuario, @TC_NombreEstado", parameters).ToList();
+            return Reporte;
+        }
+
         public bool registarReporte(string descripcion, int idUsuario, int idAdminEdificio)
         {
             var parameters = new[]

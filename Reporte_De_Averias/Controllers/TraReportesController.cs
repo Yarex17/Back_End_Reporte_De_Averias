@@ -34,6 +34,14 @@ namespace Reporte_De_Averias.Controllers
             return _negocioSql.listarReportesPorUsuario(idUsuario);
         }
 
+        [HttpPost]
+        [Route(nameof(ListarTraReportesPorUsuarioYEstado))]
+        public Task<List<TraReporte>> ListarTraReportesPorUsuarioYEstado(int idUsuario, string nombreEstado)
+        {
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            return _negocioSql.listarTraReportesPorUsuarioYEstado(idUsuario, nombreEstado);
+        }
+
         // GET: api/TraReportes/5
         [HttpGet]
         [Route(nameof(BuscarTraReporte))]
