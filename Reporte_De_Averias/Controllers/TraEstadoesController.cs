@@ -47,9 +47,16 @@ namespace Reporte_De_Averias.Controllers
             return traEstado;
         }
 
-        // PUT: api/TraEstados/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Route(nameof(BuscarTraEstadoPorNombre))]
+        public async Task<ActionResult<TraEstado>> BuscarTraEstadoPorNombre(string nombre)
+        {
+            return _negocioSql.buscarEstado(nombre);
+        }
+
+            // PUT: api/TraEstados/5
+            // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+            [HttpPost]
         [Route(nameof(CrearTraEstado))]
         public bool CrearTraEstado(String nombre)
         {
