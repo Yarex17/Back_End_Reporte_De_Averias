@@ -77,6 +77,13 @@ namespace Reporte_De_Averias.Controllers
             return true;
         }
 
+        [HttpPost]
+        [Route(nameof(ModificarReporteTecnico))]
+        public bool ModificarReporteTecnico(int idReporte, string descripcion, int idEstado)
+        {
+            return _negocioSql.modificarReporteTecnico(idReporte, descripcion, idEstado);
+        }
+
         // POST: api/TraReportes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]

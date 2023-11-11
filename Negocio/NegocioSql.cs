@@ -185,7 +185,13 @@ namespace Negocio
         {
             return _accesoDatosSQL.agregarDatosReporte(idReporte, tipoAveria, prioridad, estado, oficina);
         }
-        public bool modificarReporte(TraReporte reporte, int tipoAveria, int prioridad, int estado, int oficina)
+
+        public bool modificarReporteTecnico(int idReporte, string descripcion, int idEstado)
+        {
+            return _accesoDatosSQL.modificarReporteTecnico(idReporte, descripcion, idEstado);
+        }
+
+            public bool modificarReporte(TraReporte reporte, int tipoAveria, int prioridad, int estado, int oficina)
         {
             return _accesoDatosSQL.modificarReporte(reporte, tipoAveria, prioridad, estado, oficina);
         }

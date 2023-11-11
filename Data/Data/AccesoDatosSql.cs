@@ -531,7 +531,30 @@ namespace Data.Data
 
         }
 
-        public bool modificarReporte(TraReporte traReporte, int tipoAveria, int prioridad, int estado, int oficina)
+        public bool modificarReporteTecnico(int idReporte, string descripcion, int idEstado)
+        {
+
+            var parameters = new[]
+             {
+               new SqlParameter("@TN_IdReporte", idReporte),
+               new SqlParameter("@TC_Descripcion", descripcion),
+               new SqlParameter("@TB_IdEstado", idEstado)
+
+            };
+
+            try
+            {
+                dbContext.TraReporte.FromSqlRaw(@"exec AVRS.PA_ModificarReporteTecnico @TN_IdReporte, @TC_Descripcion, @TB_IdEstado", parameters).ToList().FirstOrDefault();
+                return false;
+            }
+            catch (Exception ex)
+            {
+
+            };
+            return true;
+        }
+
+            public bool modificarReporte(TraReporte traReporte, int tipoAveria, int prioridad, int estado, int oficina)
         {
             var parameters = new[]
              {
