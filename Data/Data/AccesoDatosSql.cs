@@ -88,7 +88,7 @@ namespace Data.Data
 
             public bool modificarUsuario(TraUsuario usuario, int idOficinaNueva)
         {
-            int activo = usuario.TbActivo ? 1 : 0;
+            int activo = (bool)usuario.TbActivo ? 1 : 0;
             var parameters = new[]
             {
                 new SqlParameter("@TN_IdUsuario", usuario.TnIdUsuario),
@@ -171,7 +171,7 @@ namespace Data.Data
 
         public bool modificarEdificio(TraEdificio edificio)
         {
-            int activo = edificio.TbActivo ? 1 : 0;
+            int activo = (bool)edificio.TbActivo ? 1 : 0;
             var parameters = new[]
             {
                 new SqlParameter("@TN_IdEdificio", edificio.TnIdEdificio),
@@ -239,7 +239,7 @@ namespace Data.Data
         public bool modificarEstado(TraEstado estado)
         {
 
-            int activo = estado.TbActivo ? 1 : 0;
+            int activo = (bool)estado.TbActivo ? 1 : 0;
             var parameters = new[]
             {
                new SqlParameter("@TN_IdEstado", estado.TnIdEstado),
@@ -378,7 +378,7 @@ namespace Data.Data
         public bool modificarPrioridad(TraPrioridad prioridad)
         {
 
-            int activo = prioridad.TbActiva ? 1 : 0;
+            int activo = (bool)prioridad.TbActiva ? 1 : 0;
             var parameters = new[]
             {
                 new SqlParameter("@TN_IdPrioridad", prioridad.TnIdPrioridad),
@@ -518,20 +518,19 @@ namespace Data.Data
             return Reporte;
         }
 
-        public bool agregarDatosReporte(int idReporte, int tipoAveria, int prioridad, int estado, int oficina)
+        public bool agregarDatosReporte(int idReporte, int tipoAveria, int prioridad, int estado)
         {
             var parameters = new[]
             {
                new SqlParameter("@TN_IdReporte", idReporte),
                new SqlParameter("@TN_TipoAveria", tipoAveria),
                new SqlParameter("@TN_Prioridad", prioridad),
-               new SqlParameter("@TN_Estado", estado),
-               new SqlParameter("@TN_IdOficina", oficina)
+               new SqlParameter("@TN_Estado", estado)
             };
 
             try
             {
-                dbContext.TraReporte.FromSqlRaw(@"exec AVRS.PA_AgregarDatosReporte @TN_IdReporte, @TN_TipoAveria, @TN_Prioridad, @TN_Estado, @TN_IdOficina", parameters).ToList().FirstOrDefault();
+                dbContext.TraReporte.FromSqlRaw(@"exec AVRS.PA_AgregarDatosReporte @TN_IdReporte, @TN_TipoAveria, @TN_Prioridad, @TN_Estado", parameters).ToList().FirstOrDefault();
                 return false;
             }
             catch (Exception ex)
@@ -565,7 +564,7 @@ namespace Data.Data
             return true;
         }
 
-            public bool modificarReporte(TraReporte traReporte, int tipoAveria, int prioridad, int estado, int oficina)
+            public bool modificarReporte(TraReporte traReporte, int tipoAveria, int prioridad, int estado)
         {
             var parameters = new[]
              {
@@ -574,13 +573,12 @@ namespace Data.Data
                new SqlParameter("@TB_Activo", traReporte.TbActivo),
                new SqlParameter("@TN_TipoAveria", tipoAveria),
                new SqlParameter("@TN_Prioridad", prioridad),
-               new SqlParameter("@TN_Estado", estado),
-               new SqlParameter("@TN_IdOficina", oficina)
+               new SqlParameter("@TN_Estado", estado)
             };
 
             try
             {
-                dbContext.TraReporte.FromSqlRaw(@"exec AVRS.PA_ActualizarReporte @TN_IdReporte, @TC_Descripcion, @TB_Activo, @TN_TipoAveria, @TN_Prioridad, @TN_Estado, @TN_IdOficina", parameters).ToList().FirstOrDefault();
+                dbContext.TraReporte.FromSqlRaw(@"exec AVRS.PA_ActualizarReporte @TN_IdReporte, @TC_Descripcion, @TB_Activo, @TN_TipoAveria, @TN_Prioridad, @TN_Estado", parameters).ToList().FirstOrDefault();
                 return false;
             }
             catch (Exception ex)

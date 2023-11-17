@@ -169,7 +169,7 @@ namespace Entities.Context
 
             modelBuilder.Entity<TraReporteTipoAveriaPrioridadEstadoOficina>(entity =>
             {
-                entity.HasKey(e => new { e.TnIdReporte, e.TnIdTipoAveria, e.TnIdPrioridad, e.TnIdEstado, e.TnIdOficina }).HasName("PKRA_ReporteTipoAveriaPrioridadEstadoOficina");
+                entity.HasKey(e => new { e.TnIdReporte, e.TnIdTipoAveria, e.TnIdPrioridad, e.TnIdEstado}).HasName("PKRA_ReporteTipoAveriaPrioridadEstadoOficina");
 
                 entity.ToTable("TRA_ReporteTipoAveriaPrioridadEstadoOficina", "AVRS");
 
@@ -177,17 +177,11 @@ namespace Entities.Context
                 entity.Property(e => e.TnIdTipoAveria).HasColumnName("TN_IdTipoAveria");
                 entity.Property(e => e.TnIdPrioridad).HasColumnName("TN_IdPrioridad");
                 entity.Property(e => e.TnIdEstado).HasColumnName("TN_IdEstado");
-                entity.Property(e => e.TnIdOficina).HasColumnName("TN_IdOficina");
 
                 entity.HasOne(d => d.TnIdEstadoNavigation).WithMany(p => p.TraReporteTipoAveriaPrioridadEstadoOficinas)
                     .HasForeignKey(d => d.TnIdEstado)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKRA_Reporte_Estado");
-
-                entity.HasOne(d => d.TnIdOficinaNavigation).WithMany(p => p.TraReporteTipoAveriaPrioridadEstadoOficinas)
-                    .HasForeignKey(d => d.TnIdOficina)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FKRA_Reporte_Oficina");
 
                 entity.HasOne(d => d.TnIdPrioridadNavigation).WithMany(p => p.TraReporteTipoAveriaPrioridadEstadoOficinas)
                     .HasForeignKey(d => d.TnIdPrioridad)

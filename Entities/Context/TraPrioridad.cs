@@ -9,7 +9,7 @@ public partial class TraPrioridad
 
     public string TcNombre { get; set; } = null!;
 
-    public bool TbActiva { get; set; }
+    public bool? TbActiva { get; set; }
 
     public bool TbEliminada { get; set; }
 

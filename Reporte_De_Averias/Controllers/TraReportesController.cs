@@ -79,9 +79,9 @@ namespace Reporte_De_Averias.Controllers
 
         [HttpPost]
         [Route(nameof(AgregarDatosReporte))]
-        public bool AgregarDatosReporte(int idReporte, int tipoAveria, int prioridad, int estado, int oficina)
+        public bool AgregarDatosReporte(int idReporte, int tipoAveria, int prioridad, int estado)
         {
-            _negocioSql.agregarDatosReporte(idReporte, tipoAveria, prioridad, estado, oficina);
+            _negocioSql.agregarDatosReporte(idReporte, tipoAveria, prioridad, estado);
             return true;
         }
 
@@ -96,14 +96,14 @@ namespace Reporte_De_Averias.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Route(nameof(ModificarReporte))]
-        public bool ModificarReporte(int idReporte, string descripcion, int tipoAveria, int prioridad, int estado, int oficina, bool activo)
+        public bool ModificarReporte(int idReporte, string descripcion, int tipoAveria, int prioridad, int estado, bool activo)
         {
             TraReporte traReporte = new TraReporte();
             traReporte.TnIdReporte = idReporte;
             traReporte.TcDescripcion = descripcion;
             traReporte.TbActivo = activo;
             
-            return _negocioSql.modificarReporte(traReporte, tipoAveria, prioridad, estado, oficina);
+            return _negocioSql.modificarReporte(traReporte, tipoAveria, prioridad, estado);
         }
 
         // DELETE: api/TraReportes/5
