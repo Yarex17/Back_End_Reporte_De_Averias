@@ -13,11 +13,7 @@ public partial class TraReporteTipoAveriaPrioridadEstadoOficina
 
     public int TnIdEstado { get; set; }
 
-    public int TnIdOficina { get; set; }
-
     public virtual TraEstado TnIdEstadoNavigation { get; set; } = null!;
-
-    public virtual TraOficina TnIdOficinaNavigation { get; set; } = null!;
 
     public virtual TraPrioridad TnIdPrioridadNavigation { get; set; } = null!;
 

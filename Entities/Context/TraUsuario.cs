@@ -19,7 +19,7 @@ public partial class TraUsuario
 
     public string TcContrasennia { get; set; } = null!;
 
-    public bool TbActivo { get; set; }
+    public bool? TbActivo { get; set; }
 
     public bool TbEliminado { get; set; }
 
