@@ -97,6 +97,10 @@ namespace Negocio
         {
             return _accesoDatosSQL.buscarEstado(nombre);
         }
+        public TraEstado buscarEstadoPorReporte(int idReporte)
+        {
+            return _accesoDatosSQL.buscarEstadoPorReporte(idReporte);
+        }
         public bool modificarEstado(TraEstado estado)
         {
             return _accesoDatosSQL.modificarEstado(estado);
