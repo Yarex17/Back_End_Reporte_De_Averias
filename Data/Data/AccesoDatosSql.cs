@@ -236,6 +236,14 @@ namespace Data.Data
             return Estado;
         }
 
+        public TraEstado buscarEstadoPorReporte(int idReporte)
+        {
+            var parameter = new List<SqlParameter>();
+            parameter.Add(new SqlParameter("@TN_IdReporte", idReporte));
+            TraEstado Estado = dbContext.TraEstado.FromSqlRaw(@"exec AVRS.PA_BuscarEstadoPorReporte @TN_IdReporte", parameter.ToArray()).ToList().FirstOrDefault();
+            return Estado;
+        }
+
         public bool modificarEstado(TraEstado estado)
         {
 
